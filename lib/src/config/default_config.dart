@@ -236,7 +236,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       ticksText: TextAreaConfig(
         style: TextStyle(
           fontSize: theme.normalTextSize,
-          // color: theme.ticksTextColor,
+          color: theme.ticksTextColor,
           overflow: TextOverflow.ellipsis,
           height: defaultTextHeight,
         ),
@@ -305,7 +305,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       enable: true,
       crosshair: LineConfig(
         paint: PaintConfig(
-          // color: theme.crossColor,
+          color: theme.crossColor,
           strokeWidth: 0.5 * theme.scale,
         ),
         type: LineType.dashed,
@@ -314,18 +314,18 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       crosspoint: PointConfig(
         radius: 2 * theme.scale,
         width: 0 * theme.scale,
-        // color: theme.crossColor,
-        borderWidth: 2 * theme.scale,
-        borderColor: theme.crossColor.withAlpha(0.5.alpha),
+        color: theme.crossColor,
+        borderWidth: 3 * theme.scale,
+        borderColor: theme.crossColor.withAlpha(0.2.alpha),
       ),
       ticksText: TextAreaConfig(
         style: TextStyle(
-          // color: theme.crossTextColor,
+          color: theme.crossTextColor,
           fontSize: theme.normalTextSize,
           fontWeight: FontWeight.normal,
           height: defaultTextHeight,
         ),
-        // background: theme.crossTextBg,
+        background: theme.crossTextBg,
         padding: EdgeInsets.all(2 * theme.scale),
         border: BorderSide.none,
         borderRadius: BorderRadius.all(
@@ -353,7 +353,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         /// tooltip 文本设置
         style: TextStyle(
           fontSize: theme.normalTextSize,
-          // color: theme.tooltipTextColor,
+          color: theme.tooltipTextColor,
           overflow: TextOverflow.ellipsis,
           height: defaultMultiTextHeight,
         ),
@@ -367,7 +367,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       crosshair: LineConfig(
         paint: PaintConfig(
           strokeWidth: 0.5 * theme.scale,
-          // color: theme.drawColor,
+          color: theme.drawColor,
         ),
         type: LineType.dashed,
         dashes: const [5, 3],
@@ -375,7 +375,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       crosspoint: PointConfig(
         radius: 2 * theme.scale,
         width: 0 * theme.scale,
-        // color: theme.drawColor,
+        color: theme.drawColor,
         borderWidth: 2 * theme.scale,
         borderColor: theme.drawColor.withAlpha(0.5.alpha),
       ),
@@ -387,8 +387,6 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         type: LineType.solid,
         dashes: [5, 3],
       ),
-      // 绘制[drawPoint]和[ticksText]刻度时, 是否始终使用[drawLine]指定的颜色.
-      // useDrawLineColor: true,
       drawPoint: PointConfig(
         radius: 9 * theme.scale,
         width: 0 * theme.scale,
@@ -403,7 +401,6 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
           fontWeight: FontWeight.normal,
           height: defaultTextHeight,
         ),
-        // background: theme.drawTextBg, // 已废弃
         padding: EdgeInsets.all(2 * theme.scale),
         border: BorderSide.none,
         borderRadius: BorderRadius.all(
@@ -429,7 +426,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
           )
         ],
         shapeSide: BorderSide(
-          // color: theme.gridLine,
+          color: theme.gridLine,
           width: 1 * theme.scale,
         ),
       ),
