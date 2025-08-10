@@ -376,7 +376,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
             color: theme.crossTextColor,
             fontSize: theme.normalTextSize,
             fontWeight: FontWeight.normal,
-            height: defaultTextHeight,
+            height: defaultTipsTextHeight,
           ),
           background: theme.crossTextBg,
           padding: EdgeInsets.all(2 * theme.scale),
@@ -384,6 +384,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
           borderRadius: BorderRadius.all(
             Radius.circular(2 * theme.scale),
           ),
+          textAlign: TextAlign.end,
         ),
       ).of(
         textColor: theme.crossTextColor,
