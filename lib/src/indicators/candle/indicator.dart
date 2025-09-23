@@ -443,7 +443,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
       /// 倒计时Text
       String? countDownText;
       if (indicator.showCountDown && !klineData.isTimeChart) {
-        final nextUpdateDateTime = model.nextUpdateDateTime(klineData.req.bar);
+        final nextUpdateDateTime = model.nextUpdateDateTime(klineData.req.timeBar);
         if (nextUpdateDateTime != null &&
             nextUpdateDateTime.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch) {
           countDownText = nextUpdateDateTime.diffAsCountdown();

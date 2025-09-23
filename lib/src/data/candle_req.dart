@@ -18,8 +18,8 @@ mixin CandleReqData on BaseData {
   String get instId => req.instId;
   int get precision => req.precision;
   String get key => req.key;
-  String get reqKey => req.reqKey;
-  TimeBar? get timeBar => req.timeBar;
+  String get rangeKey => req.rangeKey;
+  ITimeBar get timeBar => req.timeBar;
   bool get invalid => req.instId.isEmpty;
 
   bool get isTimeChart => timeBar == TimeBar.s1;
@@ -44,7 +44,9 @@ mixin CandleReqData on BaseData {
     if (isEmpty || reset) {
       return req.copyWith(after: null, before: null);
     }
-    final model = list.secondWhereOrNull((m) => m.calcuData.dataList.hasValidData);
+    final model = list.secondWhereOrNull(
+      (m) => m.calcuData.dataList.hasValidData,
+    );
     return req.copyWith(
       after: null,
       before: model?.ts,

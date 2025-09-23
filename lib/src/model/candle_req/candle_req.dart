@@ -46,7 +46,7 @@ enum RequestState {
 class CandleReq {
   const CandleReq({
     required this.instId,
-    this.bar = '1m',
+    this.timeBar = TimeBar.m1,
     this.limit = 100,
     this.precision = defaultPrecision,
     this.after,
@@ -68,7 +68,7 @@ class CandleReq {
   /// 如 [1m/3m/5m/15m/30m/1H/2H/4H]
   /// 香港时间开盘价k线：[6H/12H/1D/2D/3D/1W/1M/3M]
   /// UTC时间开盘价k线：[/6Hutc/12Hutc/1Dutc/2Dutc/3Dutc/1Wutc/1Mutc/3Mutc]
-  final String bar;
+  final ITimeBar timeBar;
 
   /// 分页返回的结果集数量，最大为300，不填默认返回100条
   final int limit;
@@ -86,7 +86,7 @@ class CandleReq {
 
   @override
   String toString() {
-    return 'CandleReq($instId-$displayName, $bar, $limit, $precision, $before, $after, $state)';
+    return 'CandleReq($instId-$displayName, $timeBar, $limit, $precision, $before, $after, $state)';
   }
 
   @override
@@ -95,7 +95,7 @@ class CandleReq {
     if (other is CandleReq) {
       return other.runtimeType == runtimeType &&
           other.instId == instId &&
-          other.bar == bar &&
+          other.timeBar == timeBar &&
           other.after == after &&
           other.before == before &&
           other.precision == precision &&
@@ -106,21 +106,26 @@ class CandleReq {
 
   @override
   int get hashCode {
-    return instId.hashCode ^ bar.hashCode ^ precision.hashCode ^ state.hashCode;
+    return instId.hashCode ^ timeBar.hashCode ^ precision.hashCode ^ state.hashCode;
   }
 
   factory CandleReq.fromJson(Map<String, dynamic> json) => _$CandleReqFromJson(json);
   Map<String, dynamic> toJson() => _$CandleReqToJson(this);
+
+  Map<String, dynamic> toRequestParams() {
+    return toJson()
+      ..remove('timeBar')
+      ..['bar'] = timeBar.bar;
+  }
 }
 
 extension CandleReqExt on CandleReq {
-  String get key => "$instId-$bar";
-  String get reqKey => "$instId-$bar-$before-$after";
+  String get key => "$instId-$timeBar";
 
-  TimeBar? get timeBar => TimeBar.convert(bar);
+  String get rangeKey => "$instId-$timeBar-$before-$after";
 
   Map<String, dynamic> toLoadMoreJson() {
-    return toJson()..remove('before');
+    return toRequestParams()..remove('before');
   }
 
   CandleReq toInitReq() => copyWith(after: null, before: null);

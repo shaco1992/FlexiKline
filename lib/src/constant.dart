@@ -15,10 +15,10 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flexi_formatter/date_time.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 
 import 'extension/basic_type_ext.dart';
+import 'extension/collections_ext.dart';
 
 /// double类型的计算精度误差
 const double precisionError = 0.000001;
@@ -87,12 +87,60 @@ abstract interface class ITimeBar {
   TimeUnit get unit;
 }
 
-/// 时间粒度，默认值1m
+extension ITimeBarExt on ITimeBar {
+  /// 是否是有效的时间粒度
+  bool get isValid {
+    return bar.isNotEmpty && multiplier > 0 && unit != TimeUnit.microsecond;
+  }
+
+  /// 当前时间粒度对应的毫秒数
+  int get milliseconds => unit.microseconds ~/ 1000 * multiplier;
+
+  bool get isUtc {
+    return bar.equalsIgnoreCase('utc');
+  }
+}
+
+/// 自定义时间粒度
+final class FlexiTimeBar implements ITimeBar {
+  const FlexiTimeBar(
+    this.bar,
+    this.multiplier,
+    this.unit,
+  );
+  @override
+  final String bar;
+
+  @override
+  final int multiplier;
+
+  @override
+  final TimeUnit unit;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ITimeBar &&
+        runtimeType == other.runtimeType &&
+        bar == other.bar &&
+        multiplier == other.multiplier &&
+        unit == other.unit;
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode ^ multiplier.hashCode ^ unit.hashCode;
+
+  @override
+  String toString() => '$bar:$milliseconds';
+}
+
+const invalidTimeBar = FlexiTimeBar('', 0, TimeUnit.microsecond);
+
+/// 内置: 时间粒度，默认值1m
 /// 如 [1m/3m/5m/15m/30m/1H/2H/4H]
 /// 香港时间开盘价k线：[6H/12H/1D/2D/3D/1W/1M/3M]
 /// UTC时间开盘价k线：[/6Hutc/12Hutc/1Dutc/2Dutc/3Dutc/1Wutc/1Mutc/3Mutc]
 enum TimeBar implements ITimeBar {
-  // time('1m', 1, TimeUnit.minute), // 1分钟线图
   s1('1s', 1, TimeUnit.second),
   m1('1m', 1, TimeUnit.minute),
   m3('3m', 3, TimeUnit.minute),
@@ -128,24 +176,19 @@ enum TimeBar implements ITimeBar {
   @override
   final TimeUnit unit;
 
-  int get milliseconds => unit.microseconds ~/ 1000 * multiplier;
-
   bool get isUtc {
-    return name.contains('utc') || bar.contains('utc');
+    return name.containsIgnoreCase('utc') || bar.containsIgnoreCase('utc');
   }
 
   @override
-  String toString() => bar;
+  String toString() => '$bar:$milliseconds';
 
-  static TimeBar? convert(String bar) {
-    try {
-      return TimeBar.values.firstWhere(
-        (e) => e.bar.equalsIgnoreCase(bar) || e.name.equalsIgnoreCase(bar),
-      );
-    } on Error catch (error) {
-      debugPrintStack(stackTrace: error.stackTrace);
-      return null;
-    }
+  static TimeBar? from(String bar, int multiplier, TimeUnit unit) {
+    return TimeBar.values.firstWhereOrNull((e) {
+      return (e.bar.equalsIgnoreCase(bar) || e.name.equalsIgnoreCase(bar)) &&
+          e.multiplier == multiplier &&
+          e.unit == unit;
+    });
   }
 }
 

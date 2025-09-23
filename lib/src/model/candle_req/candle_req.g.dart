@@ -9,7 +9,7 @@ part of 'candle_req.dart';
 abstract class _$CandleReqCWProxy {
   CandleReq instId(String instId);
 
-  CandleReq bar(String bar);
+  CandleReq timeBar(ITimeBar timeBar);
 
   CandleReq limit(int limit);
 
@@ -31,7 +31,7 @@ abstract class _$CandleReqCWProxy {
   /// ````
   CandleReq call({
     String instId,
-    String bar,
+    ITimeBar timeBar,
     int limit,
     int precision,
     int? after,
@@ -51,7 +51,7 @@ class _$CandleReqCWProxyImpl implements _$CandleReqCWProxy {
   CandleReq instId(String instId) => this(instId: instId);
 
   @override
-  CandleReq bar(String bar) => this(bar: bar);
+  CandleReq timeBar(ITimeBar timeBar) => this(timeBar: timeBar);
 
   @override
   CandleReq limit(int limit) => this(limit: limit);
@@ -81,7 +81,7 @@ class _$CandleReqCWProxyImpl implements _$CandleReqCWProxy {
   /// ````
   CandleReq call({
     Object? instId = const $CopyWithPlaceholder(),
-    Object? bar = const $CopyWithPlaceholder(),
+    Object? timeBar = const $CopyWithPlaceholder(),
     Object? limit = const $CopyWithPlaceholder(),
     Object? precision = const $CopyWithPlaceholder(),
     Object? after = const $CopyWithPlaceholder(),
@@ -94,10 +94,10 @@ class _$CandleReqCWProxyImpl implements _$CandleReqCWProxy {
           ? _value.instId
           // ignore: cast_nullable_to_non_nullable
           : instId as String,
-      bar: bar == const $CopyWithPlaceholder()
-          ? _value.bar
+      timeBar: timeBar == const $CopyWithPlaceholder()
+          ? _value.timeBar
           // ignore: cast_nullable_to_non_nullable
-          : bar as String,
+          : timeBar as ITimeBar,
       limit: limit == const $CopyWithPlaceholder()
           ? _value.limit
           // ignore: cast_nullable_to_non_nullable
@@ -138,7 +138,10 @@ extension $CandleReqCopyWith on CandleReq {
 
 CandleReq _$CandleReqFromJson(Map<String, dynamic> json) => CandleReq(
       instId: json['instId'] as String,
-      bar: json['bar'] as String? ?? '1m',
+      timeBar: json['timeBar'] == null
+          ? TimeBar.m1
+          : const ITimeBarConvert()
+              .fromJson(json['timeBar'] as Map<String, dynamic>),
       limit: (json['limit'] as num?)?.toInt() ?? 100,
       after: (json['after'] as num?)?.toInt(),
       before: (json['before'] as num?)?.toInt(),
@@ -148,6 +151,6 @@ Map<String, dynamic> _$CandleReqToJson(CandleReq instance) => <String, dynamic>{
       'instId': instance.instId,
       if (instance.after case final value?) 'after': value,
       if (instance.before case final value?) 'before': value,
-      'bar': instance.bar,
+      'timeBar': const ITimeBarConvert().toJson(instance.timeBar),
       'limit': instance.limit,
     };

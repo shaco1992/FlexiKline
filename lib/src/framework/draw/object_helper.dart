@@ -306,7 +306,7 @@ mixin DrawObjectMixin on DrawStateObject {
     if (ts == null) return Size.zero;
 
     final klineData = context.curKlineData;
-    final timeTxt = formatTimeTicksText(ts, bar: klineData.timeBar);
+    final timeTxt = formatTimeTicksText(ts, klineData.timeBar.unit);
 
     drawableRect ??= context.timeRect;
     return canvas.drawTextArea(
@@ -357,8 +357,8 @@ mixin DrawObjectMixin on DrawStateObject {
 
   /// 格式化时间刻度文本
   @protected
-  String formatTimeTicksText(int ts, {TimeBar? bar}) {
-    return ts.dateTimeInMillisecond.formatByUnit(bar?.unit);
+  String formatTimeTicksText(int ts, [TimeUnit? unit]) {
+    return ts.dateTimeInMillisecond.formatByUnit(unit);
   }
 
   /// 格式化价值刻度文本

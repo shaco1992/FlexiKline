@@ -40,7 +40,7 @@ class KlineData extends BaseData with CandleReqData, CandleListData, PaintDrawDa
   final FlexiStopwatch stopwatch = FlexiStopwatch();
 
   static final KlineData empty = KlineData(
-    const CandleReq(instId: "", bar: ""),
+    const CandleReq(instId: "", timeBar: invalidTimeBar),
     0,
     list: List.empty(growable: false),
   );
