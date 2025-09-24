@@ -1,3 +1,9 @@
+## 1.0.1
+* Optimize the TimeBar and support flexible customization.
+* Support image drawing.
+* Support image and text drawing.
+* bugfix.
+
 ## 1.0.0
 * Optimize the calculation performance of indicators
 * Optimize gesture detector performance.

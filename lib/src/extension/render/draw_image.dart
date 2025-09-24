@@ -25,17 +25,19 @@ extension FlexiDrawImage on Canvas {
   /// 返回[image]在canvas中的实际绘制区域.
   Rect drawImageView({
     /// 绘制启始坐标位置
-    required ui.Image image,
-
-    /// 绘制启始坐标位置
     required Offset offset,
+
+    /// 绘制图片配置
+    required ui.Image image,
     required Size imgSize,
+    // 针对[image]的裁剪区域
+    Rect? srcRect,
+    // 是否裁切: 仅在[borderRadius]有效时, 按[borderRadius]裁切.
+    bool isClip = true,
+    Paint? imagePaint,
 
     /// X轴上的绘制方向: 以offset为原点, 向左向右绘制.
     DrawDirection drawDirection = DrawDirection.ltr,
-
-    /// 针对[image]的裁剪区域
-    Rect? srcRect,
 
     /// 可绘制区域大小
     /// 主要用于边界矫正, 当绘制超出边界区域时, 会主动反向调整, 以保证内容区域完全展示. 如为null: 则不做边界矫正.
@@ -49,17 +51,13 @@ extension FlexiDrawImage on Canvas {
     BorderRadius? borderRadius,
     EdgeInsets? padding,
     BorderSide? borderSide,
-
-    /// 是否裁切: 仅在[borderRadius]有效时, 按[borderRadius]裁切.
-    bool isClip = true,
-    Paint? imagePaint,
   }) {
     final originImgSize = Size(image.width.toDouble(), image.height.toDouble());
     if (originImgSize.isEmpty || imgSize.isEmpty) {
       return offset & Size.zero;
     }
 
-    // 最终在[canvas]中的绘制区域坐标
+    // 最终在[canvas]中所绘制区域的坐标与大小
     Rect? result;
 
     Size viewSize = imgSize;
