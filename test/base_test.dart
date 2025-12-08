@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: prefer_final_locals
+
 import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:async';
@@ -36,7 +38,7 @@ void main() {
     Decimal hundred = Decimal.fromInt(100);
     Decimal sumUp = Decimal.fromJson('14.9');
     Decimal sumDown = Decimal.fromJson('15.4');
-    Decimal ret = sumUp.div((sumUp + sumDown)) * hundred;
+    Decimal ret = sumUp.div(sumUp + sumDown) * hundred;
 
     debugPrint(ret.toString());
 

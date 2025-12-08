@@ -60,7 +60,7 @@ extension FlexiDrawTextExt on Canvas {
       return Size.zero;
     }
 
-    TextPainter textPainter = TextPainter(
+    final textPainter = TextPainter(
       text: textSpan ??
           TextSpan(
             text: text,
@@ -87,7 +87,7 @@ extension FlexiDrawTextExt on Canvas {
     }
 
     if (drawableRect != null) {
-      double dy = math.max(
+      final dy = math.max(
         drawableRect.top,
         math.min(offset.dy, drawableRect.bottom),
       );

@@ -29,7 +29,7 @@ class IIndicatorKeyConvert implements JsonConverter<IIndicatorKey, String> {
 
   @override
   IIndicatorKey fromJson(String json) {
-    final splits = json.split(":");
+    final splits = json.split(':');
     final id = splits.getItem(0);
     if (id == null || id.isEmpty) return unknownIndicatorKey;
     final label = splits.getItem(1);
@@ -38,7 +38,7 @@ class IIndicatorKeyConvert implements JsonConverter<IIndicatorKey, String> {
 
   @override
   String toJson(IIndicatorKey key) {
-    return "${key.id}:${key.label}";
+    return '${key.id}:${key.label}';
   }
 }
 
@@ -245,24 +245,21 @@ class EdgeInsetsConverter implements JsonConverter<EdgeInsets, Map<String, dynam
 
   @override
   Map<String, dynamic> toJson(EdgeInsets edgeInsets) {
-    if (edgeInsets.left == 0 &&
-        edgeInsets.top == 0 &&
-        edgeInsets.right == 0 &&
-        edgeInsets.bottom == 0) {
+    if (edgeInsets.left == 0 && edgeInsets.top == 0 && edgeInsets.right == 0 && edgeInsets.bottom == 0) {
       return {};
     }
 
     if (edgeInsets.left == edgeInsets.right && edgeInsets.top == edgeInsets.bottom) {
       return {
-        "horizontal": edgeInsets.left,
-        "vertical": edgeInsets.top,
+        'horizontal': edgeInsets.left,
+        'vertical': edgeInsets.top,
       };
     }
     return {
-      "left": edgeInsets.left,
-      "top": edgeInsets.top,
-      "right": edgeInsets.right,
-      "bottom": edgeInsets.bottom,
+      'left': edgeInsets.left,
+      'top': edgeInsets.top,
+      'right': edgeInsets.right,
+      'bottom': edgeInsets.bottom,
     };
   }
 }
@@ -360,14 +357,14 @@ class BorderConverter implements JsonConverter<Border, Map<String, dynamic>> {
   Map<String, dynamic> toJson(Border border) {
     if (border.isUniform) {
       return {
-        "all": convertBorderSide(border.top),
+        'all': convertBorderSide(border.top),
       };
     }
     return {
-      "top": convertBorderSide(border.top),
-      "right": convertBorderSide(border.right),
-      "bottom": convertBorderSide(border.bottom),
-      "left": convertBorderSide(border.left),
+      'top': convertBorderSide(border.top),
+      'right': convertBorderSide(border.right),
+      'bottom': convertBorderSide(border.bottom),
+      'left': convertBorderSide(border.left),
     };
   }
 }

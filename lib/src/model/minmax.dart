@@ -93,7 +93,7 @@ class MinMax {
   static MinMax? getMinMaxByList(List<BagNum?>? list) {
     if (list == null || list.isEmpty) return null;
     MinMax? minmax;
-    for (var val in list) {
+    for (final val in list) {
       if (val != null) {
         minmax ??= MinMax.same(val);
         minmax.updateMinMaxBy(val);

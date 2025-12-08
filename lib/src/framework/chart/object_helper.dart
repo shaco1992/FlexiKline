@@ -227,7 +227,7 @@ mixin PaintObjectDataInitMixin on IndicatorObject implements IPaintDataInit {
   double get dyFactor {
     if (_dyFactor != null) return _dyFactor!;
     if (chartRect.height == 0) return _dyFactor = 1;
-    return _dyFactor = chartRect.height / (minMax.diffDivisor).toDouble();
+    return _dyFactor = chartRect.height / minMax.diffDivisor.toDouble();
   }
 
   double valueToDy(BagNum value, {bool correct = true}) {
@@ -242,7 +242,7 @@ mixin PaintObjectDataInitMixin on IndicatorObject implements IPaintDataInit {
 
   double? indexToDx(num index, {bool check = true}) {
     final indexDx = index * candleActualWidth;
-    double dx = chartRect.right + paintDxOffset - indexDx;
+    final dx = chartRect.right + paintDxOffset - indexDx;
     if (!check) return dx;
     return chartRect.includeDx(dx) ? dx : null;
   }
@@ -492,7 +492,7 @@ mixin PaintCandleHelperMixin<T extends Indicator> on PaintObject<T> {
     end ??= (klineData.end + 1).clamp(start, klineData.length); // 多绘制一根蜡烛;
     startOffset ??= startCandleDx - candleWidthHalf;
 
-    List<Offset> points = [];
+    final points = <Offset>[];
     CandleModel m;
     for (var i = start; i < end; i++) {
       m = klineData[i];
@@ -643,7 +643,7 @@ extension MultiPaintObjectExt on MainPaintObject {
   /// 收集[MainPaintObject]中子指标的计算参数
   Map<IIndicatorKey, dynamic> getCalcParams() {
     final params = <IIndicatorKey, dynamic>{};
-    for (var object in children) {
+    for (final object in children) {
       if (object.calcParams != null) {
         params[object.key] = object.calcParams;
       }

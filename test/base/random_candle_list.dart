@@ -36,7 +36,7 @@ Future<List<CandleModel>> genRandomCandleList({
   DateTime? dateTime,
   bool isHistory = true,
 }) async {
-  List<CandleModel> list = [];
+  final List<CandleModel> list = [];
   dateTime ??= DateTime.now();
   final random = math.Random();
   CandleModel? m;
@@ -57,7 +57,7 @@ Future<List<CandleModel>> genRandomCandleList({
     return val;
   }
 
-  int flag = isHistory ? -1 : 1;
+  final int flag = isHistory ? -1 : 1;
 
   for (int i = 0; i < count; i++) {
     o = c;
@@ -67,9 +67,7 @@ Future<List<CandleModel>> genRandomCandleList({
     if (h < l) [h, l] = [l, h];
     v = genVal(v, rangeVol);
     m = CandleModel(
-      ts: dateTime
-          .add(Duration(milliseconds: flag * i * timeBar.milliseconds))
-          .millisecondsSinceEpoch,
+      ts: dateTime.add(Duration(milliseconds: flag * i * timeBar.milliseconds)).millisecondsSinceEpoch,
       h: h.d,
       o: o.d,
       c: c.d,

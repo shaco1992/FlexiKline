@@ -158,7 +158,7 @@ enum TimeBar implements ITimeBar {
   D1('1D', 1, TimeUnit.day),
   D2('2D', 2, TimeUnit.day),
   D3('3D', 3, TimeUnit.day),
-  W1('1W', 7, TimeUnit.week),
+  W1('1W', 1, TimeUnit.week),
   M1('1M', 1, TimeUnit.month),
   M3('3M', 3, TimeUnit.month),
   utc6H('6Hutc', 6, TimeUnit.hour),

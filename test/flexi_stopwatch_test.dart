@@ -49,16 +49,16 @@ void main() {
       stopwatch.stop();
     });
 
-    test("test FlexiStopwatch", () async {
+    test('test FlexiStopwatch', () async {
       stopwatch.lap();
       await Future.delayed(Duration(milliseconds: 100));
-      debugPrint('spnet:${stopwatch.spentMicroseconds}μs');
+      debugPrint('spent:${stopwatch.spentMicroseconds}μs');
 
       expect(stopwatch.isRunning, true);
 
       stopwatch.lap();
       await Future.delayed(Duration(milliseconds: 200));
-      debugPrint('spnet:${stopwatch.spentMicroseconds}μs');
+      debugPrint('spent:${stopwatch.spentMicroseconds}μs');
     });
 
     test('test FlexiStopwatch run', () {

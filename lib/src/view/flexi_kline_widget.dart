@@ -538,7 +538,7 @@ class ChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Timeline.startSync("Flexi-PaintChart");
+    Timeline.startSync('Flexi-PaintChart');
 
     // try {
     //   /// 保存画布状态

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: prefer_final_locals
+
 import 'package:decimal/decimal.dart';
 import 'package:flexi_formatter/flexi_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -192,8 +194,7 @@ void main() {
     logMsg(0.00000012345.toStringAsPrecision(15)); // 1.23450000000000e-7
     logMsg(0.0000012345.toStringAsPrecision(15)); // 0.00000123450000000000
 
-    logMsg(
-        double.parse('0.12345678901234567890').toStringAsPrecision(20)); // 0.12345678901234567737
+    logMsg(double.parse('0.12345678901234567890').toStringAsPrecision(20)); // 0.12345678901234567737
     logMsg(double.parse('0.12345678901234567890').toStringAsPrecision(14)); // 0.12345678901235
   });
 
@@ -207,8 +208,7 @@ void main() {
     logMsg(Decimal.parse('0.00000012345').toStringAsPrecision(15)); // 0.000000123450000000000
     logMsg(Decimal.parse('0.0000012345').toStringAsPrecision(15)); // 0.00000123450000000000
 
-    logMsg(
-        Decimal.parse('0.12345678901234567890').toStringAsPrecision(20)); // 0.12345678901234567890
+    logMsg(Decimal.parse('0.12345678901234567890').toStringAsPrecision(20)); // 0.12345678901234567890
     logMsg(Decimal.parse('0.12345678901234567890').toStringAsPrecision(14)); // 0.12345678901235
   });
 }

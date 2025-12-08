@@ -114,22 +114,22 @@ Color? parseHexColor(String? hexStr, {Color? def}) {
   }
 
   if (hexStr.startsWith('0x')) {
-    int? colorInt = int.tryParse(hexStr);
+    final colorInt = int.tryParse(hexStr);
     if (colorInt == null) return def;
     return Color(colorInt);
   }
 
-  hexStr = hexStr.toUpperCase().replaceAll("#", "");
+  hexStr = hexStr.toUpperCase().replaceAll('#', '');
   if (hexStr.length == 6) {
-    hexStr = "FF$hexStr";
+    hexStr = 'FF$hexStr';
   }
-  int colorInt = int.parse(hexStr, radix: 16);
+  final colorInt = int.parse(hexStr, radix: 16);
   return Color(colorInt);
 }
 
 String? convertHexColor(Color? color, {String? def}) {
   if (color == null) return def;
-  return '0x${color.value.toRadixString(16).padLeft(8, '0')}';
+  return '0x${color.toARGB32().toRadixString(16).padLeft(8, '0')}';
 }
 
 FontStyle parseFontStyle(
@@ -254,16 +254,16 @@ TextDecoration parseTextDecoration(
 }) {
   TextDecoration textDecoration = def;
   switch (decoration) {
-    case "lineThrough":
+    case 'lineThrough':
       textDecoration = TextDecoration.lineThrough;
       break;
-    case "overline":
+    case 'overline':
       textDecoration = TextDecoration.overline;
       break;
-    case "underline":
+    case 'underline':
       textDecoration = TextDecoration.underline;
       break;
-    case "none":
+    case 'none':
   }
   return textDecoration;
 }
@@ -297,8 +297,7 @@ TextDecorationStyle parseTextDecorationStyle(
   );
 }
 
-TextLeadingDistribution? parseTextLeadingDistribution(String? distribution,
-    {TextLeadingDistribution? def}) {
+TextLeadingDistribution? parseTextLeadingDistribution(String? distribution, {TextLeadingDistribution? def}) {
   if (distribution == null) return def;
   if (distribution == TextLeadingDistribution.proportional.name) {
     return TextLeadingDistribution.proportional;
@@ -329,9 +328,9 @@ BorderSide parseBorderSide(Map<String, dynamic>? json) {
 
 Map<String, dynamic> convertBorderSide(BorderSide side) {
   return {
-    "color": convertHexColor(side.color),
-    "width": side.width,
-    "style": side.style.name,
+    'color': convertHexColor(side.color),
+    'width': side.width,
+    'style': side.style.name,
   };
 }
 

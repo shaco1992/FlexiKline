@@ -178,7 +178,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
       /// 绘制 Tooltip
       paintTooltip(canvas, offset, model: model);
 
-      for (var paintObject in subPaintObjects) {
+      for (final paintObject in subPaintObjects) {
         paintObject.doOnCross(canvas, offset, model: model);
       }
       mainPaintObject.doOnCross(canvas, offset, model: model);
@@ -205,7 +205,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
     if (!tooltipConfig.show) return;
     final tooltipTextStyle = tooltipConfig.style;
 
-    int? index = dxToIndex(offset.dx);
+    final index = dxToIndex(offset.dx);
     if (index == null) return;
     model ??= curKlineData.get(index);
     final pre = curKlineData.get(index + 1);
@@ -242,7 +242,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
     TooltipInfo info;
     for (int i = 0; i < tooltipInfoList.length; i++) {
       info = tooltipInfoList[i];
-      String br = i < tooltipInfoList.length - 1 ? '\n' : '';
+      final br = i < tooltipInfoList.length - 1 ? '\n' : '';
       labelSpanList.add(TextSpan(
         text: info.label + br,
         style: info.labelStyle ?? tooltipTextStyle,
@@ -269,7 +269,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
 
     if (offset.dx > mainChartWidthHalf) {
       // 点击区域在右边; 绘制在左边
-      Offset offset = Offset(
+      final offset = Offset(
         mainRect.left + tooltipConfig.margin.left,
         mainRect.top + top,
       );
@@ -314,7 +314,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
       );
     } else {
       // 点击区域在左边; 绘制在右边
-      Offset offset = Offset(
+      final offset = Offset(
         mainRect.right - tooltipConfig.margin.right,
         mainRect.top + top,
       );

@@ -19,7 +19,7 @@ mixin SettingBinding on KlineBindingBase implements ISetting, IGrid, IChart, ICr
   @override
   void init() {
     super.init();
-    logd("init setting");
+    logd('init setting');
     _candleWidth = settingConfig.candleWidth;
     _layoutMode = NormalLayoutMode(flexiKlineConfig.mainIndicator.size);
     _paintObjectManager.init(this);
@@ -32,13 +32,13 @@ mixin SettingBinding on KlineBindingBase implements ISetting, IGrid, IChart, ICr
   @override
   void initState() {
     super.initState();
-    logd("initState setting");
+    logd('initState setting');
   }
 
   @override
   void dispose() {
     super.dispose();
-    logd("dispose setting");
+    logd('dispose setting');
     _canvasSizeChangeListener.dispose();
     _subHeightListListener.dispose();
   }

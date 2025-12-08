@@ -45,7 +45,7 @@ abstract class KlineBindingBase with KlineLog implements ISetting, IPaintContext
           configuration: configuration,
           logger: logger,
         ) {
-    logd("constrouct");
+    logd('constrouct');
     loggerDelegate = logger;
     init();
   }
@@ -53,19 +53,19 @@ abstract class KlineBindingBase with KlineLog implements ISetting, IPaintContext
   @protected
   @mustCallSuper
   void init() {
-    logd("init base");
+    logd('init base');
   }
 
   @protected
   @mustCallSuper
   void initState() {
-    logd("initState base");
+    logd('initState base');
   }
 
   @protected
   @mustCallSuper
   void dispose() {
-    logd("dispose base");
+    logd('dispose base');
     if (autoSave) storeFlexiKlineConfig();
     _paintObjectManager.dispose();
     _drawObjectManager.dispose();
@@ -74,26 +74,26 @@ abstract class KlineBindingBase with KlineLog implements ISetting, IPaintContext
   @protected
   @mustCallSuper
   void onThemeChanged([covariant IFlexiKlineTheme? oldTheme]) {
-    logd("onThemeChanged base");
+    logd('onThemeChanged base');
     _paintObjectManager.refreshFlexiKlineConfig(this);
   }
 
   @protected
   @mustCallSuper
   void onLanguageChanged() {
-    logd("onLanguageChanged base");
+    logd('onLanguageChanged base');
   }
 
   @protected
   @mustCallSuper
   void onRequestChanged(CandleReq oldRequest) {
-    logd("onRequestChanged base");
+    logd('onRequestChanged base');
   }
 
   @protected
   @mustCallSuper
   bool onTap(Offset position) {
-    logd("onTap base");
+    logd('onTap base');
     return false;
   }
 

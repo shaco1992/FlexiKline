@@ -21,7 +21,7 @@ import 'package:flexi_kline/src/model/export.dart';
 List<CandleModel> getETHUSDT1DLimit50List() {
   final data = jsonDecode(ethUsdtJsonString);
   if (data is List) {
-    List<CandleModel> list = List.empty(growable: true);
+    final List<CandleModel> list = List.empty(growable: true);
     for (var i = 0; i < data.length; i++) {
       final item = data[i];
       if (item is List) {
@@ -46,7 +46,7 @@ List<CandleModel> getETHUSDT1DLimit50List() {
 List<CandleModel> getCandleModelList() {
   final data = jsonDecode(jsonString);
   if (data is List) {
-    List<CandleModel> list = List.empty(growable: true);
+    final List<CandleModel> list = List.empty(growable: true);
     for (var i = data.length - 1; i >= 0; i--) {
       final item = data[i];
       if (item is List) {

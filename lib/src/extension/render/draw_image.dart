@@ -71,7 +71,7 @@ extension FlexiDrawImage on Canvas {
 
     // 矫正边界.
     if (drawableRect != null) {
-      double dy = math.max(
+      final dy = math.max(
         drawableRect.top,
         math.min(offset.dy, drawableRect.bottom),
       );

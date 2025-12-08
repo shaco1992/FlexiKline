@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: prefer_final_locals
+
 import 'dart:collection';
 
 import 'package:flexi_kline/src/extension/export.dart';

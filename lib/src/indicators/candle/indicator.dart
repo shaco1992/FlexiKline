@@ -126,7 +126,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
   MinMax? initState(int start, int end) {
     if (!klineData.canPaintChart) return null;
 
-    MinMax? minmax = klineData.calculateMinmax(start, end);
+    final minmax = klineData.calculateMinmax(start, end);
     _maxHigh = minmax?.max;
     _minLow = minmax?.min;
     return minmax;
@@ -195,14 +195,14 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
       return;
     }
 
-    int start = klineData.start;
-    int end = klineData.end;
+    final start = klineData.start;
+    final end = klineData.end;
 
     final offset = startCandleDx - candleWidthHalf;
     final barWidthHalf = candleWidthHalf - candleSpacing;
 
     Offset? maxHihgOffset, minLowOffset;
-    bool hasEnough = paintDxOffset > 0;
+    final hasEnough = paintDxOffset > 0;
     BagNum maxHigh = klineData[start].high;
     BagNum minLow = klineData[start].low;
     CandleModel m;
@@ -337,8 +337,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
       if (size.width > maxTickWidth) maxTickWidth = size.width;
     }
 
-    if (!gestureConfig.isManualSetZoomRect &&
-        (_zoomSlideBarSize == null || _zoomSlideBarSize!.width != maxTickWidth)) {
+    if (!gestureConfig.isManualSetZoomRect && (_zoomSlideBarSize == null || _zoomSlideBarSize!.width != maxTickWidth)) {
       final barSize = Size(maxTickWidth, drawableRect.height);
       _zoomSlideBarSize = barSize;
       updateZoomSlideBarRect(Rect.fromLTWH(
@@ -362,7 +361,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     final model = klineData.latest;
     if (model == null) return null;
     // 计算最新价YAxis位置.
-    double dy = clampDyInChart(valueToDy(model.close));
+    final dy = clampDyInChart(valueToDy(model.close));
     return Rect.fromLTWH(
       chartRect.right + _latestTextOffset - indicator.last.spacing - _lastTextSize!.width,
       dy,
@@ -416,8 +415,8 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         );
       }
 
-      TextAreaConfig textConfig = latest.text;
-      Color? background = textConfig.background;
+      final textConfig = latest.text;
+      final background = textConfig.background;
       BorderRadius? borderRadius = textConfig.borderRadius;
 
       final halfHeight = textConfig.areaHeight / 2;

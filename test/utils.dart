@@ -15,7 +15,7 @@
 import 'package:flutter/material.dart';
 
 void printIterable<T>(Iterable<T> list, {String? tag}) {
-  for (var val in list) {
+  for (final val in list) {
     debugPrint('${tag ?? ''}>${val.toString()}');
   }
 }

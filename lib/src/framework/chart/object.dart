@@ -219,7 +219,7 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
 
   @override
   bool handleTap(Offset position) {
-    for (var object in children) {
+    for (final object in children) {
       if (object.handleTap(position)) return true;
     }
     return false;
@@ -227,14 +227,14 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
 
   @override
   void precompute(Range range, {bool reset = false}) {
-    for (var object in children) {
+    for (final object in children) {
       object.precompute(range, reset: reset);
     }
   }
 
   @override
   void didChangeTheme() {
-    for (var object in children) {
+    for (final object in children) {
       object.didChangeTheme();
     }
   }
@@ -263,7 +263,7 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
   @override
   void dispose() {
     super.dispose();
-    for (var object in children) {
+    for (final object in children) {
       object.dispose();
     }
     children.clear();

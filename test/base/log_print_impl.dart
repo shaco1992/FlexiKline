@@ -36,7 +36,7 @@ class LogPrintImpl implements ILogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
-    debugPrint("zp:::Debug $logTag\t$msg");
+    debugPrint('zp:::Debug $logTag\t$msg');
   }
 
   @override
@@ -46,7 +46,7 @@ class LogPrintImpl implements ILogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
-    debugPrint("zp:::Info $logTag\t$msg");
+    debugPrint('zp:::Info $logTag\t$msg');
   }
 
   @override
@@ -56,7 +56,7 @@ class LogPrintImpl implements ILogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
-    debugPrint("zp:::Warn $logTag\t$msg");
+    debugPrint('zp:::Warn $logTag\t$msg');
   }
 
   @override
@@ -66,6 +66,6 @@ class LogPrintImpl implements ILogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
-    debugPrint("zp:::Error $logTag\t$msg");
+    debugPrint('zp:::Error $logTag\t$msg');
   }
 }

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: prefer_final_locals
+
 import 'package:decimal/decimal.dart';
 import 'package:flexi_formatter/flexi_formatter.dart';
 import 'package:flexi_kline/flexi_kline.dart';

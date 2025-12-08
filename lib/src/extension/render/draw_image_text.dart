@@ -101,7 +101,7 @@ extension FlexiDrawImageText on Canvas {
     final isDrawImage = !(originImgSize.isEmpty || imgSize.isEmpty);
     Size containerSize = isDrawImage ? imgSize : Size.zero;
 
-    TextPainter textPainter = TextPainter(
+    final textPainter = TextPainter(
       text: textSpan ??
           TextSpan(
             text: text,
@@ -133,7 +133,7 @@ extension FlexiDrawImageText on Canvas {
     }
 
     if (drawableRect != null) {
-      double dy = math.max(
+      final dy = math.max(
         drawableRect.top,
         math.min(offset.dy, drawableRect.bottom),
       );
