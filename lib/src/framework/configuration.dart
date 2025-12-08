@@ -93,7 +93,7 @@ mixin FlexiKlineThemeTextStyle implements IFlexiKlineTheme {
   }) {
     return TextStyle(
       color: color,
-      fontSize: fontSize ?? defaulTextSize * scale,
+      fontSize: fontSize ?? defaultTextSize * scale,
       fontWeight: fontWeight,
       overflow: overflow,
       height: height,
@@ -103,7 +103,7 @@ mixin FlexiKlineThemeTextStyle implements IFlexiKlineTheme {
 
   TextStyle get normalTextyStyle => TextStyle(
         color: textColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         fontWeight: FontWeight.normal,
         overflow: TextOverflow.ellipsis,
         height: defaultTextHeight,
@@ -111,7 +111,7 @@ mixin FlexiKlineThemeTextStyle implements IFlexiKlineTheme {
 
   TextStyle get ticksTextStyle => TextStyle(
         color: ticksTextColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         fontWeight: FontWeight.normal,
         overflow: TextOverflow.ellipsis,
         height: defaultTextHeight,
@@ -119,7 +119,7 @@ mixin FlexiKlineThemeTextStyle implements IFlexiKlineTheme {
 
   TextStyle get lastPriceTextStyle => TextStyle(
         color: lastPriceTextColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         fontWeight: FontWeight.normal,
         overflow: TextOverflow.ellipsis,
         height: defaultTextHeight,
@@ -127,21 +127,21 @@ mixin FlexiKlineThemeTextStyle implements IFlexiKlineTheme {
 
   TextStyle get crossTextStyle => TextStyle(
         color: crossTextColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         fontWeight: FontWeight.normal,
         height: defaultTextHeight,
       );
 
   TextStyle get tooltipTextStyle => TextStyle(
         color: tooltipTextColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         overflow: TextOverflow.ellipsis,
         height: defaultMultiTextHeight,
       );
 
   TextStyle getTipsTextStyle(Color tipsColor) => TextStyle(
         color: tipsColor,
-        fontSize: setSp(defaulTextSize),
+        fontSize: setSp(defaultTextSize),
         overflow: TextOverflow.ellipsis,
         height: defaultTipsTextHeight,
       );

@@ -37,5 +37,9 @@ private.md
 .dart_tool/
 build/
 
+.cursor/
+openspec/
+AGENTS.md
+
 # FVM Version Cache
 .fvm/

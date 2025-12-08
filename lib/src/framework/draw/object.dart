@@ -232,7 +232,7 @@ abstract class DrawObject<T extends Overlay> extends DrawStateObject with DrawOb
   bool initPoints(IDrawContext context) {
     for (final point in points) {
       if (point == null) return false;
-      final offset = context.calcuateDrawPointOffset(point);
+      final offset = context.calculateDrawPointOffset(point);
       if (offset == null) return false;
       point._offset = offset;
     }

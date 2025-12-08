@@ -64,7 +64,7 @@ extension IFlexiKlineThemeExt on IFlexiKlineTheme {
   EdgeInsets get tipsPadding => EdgeInsets.only(left: 8 * scale);
 
   /// 默认文本区域Padding
-  EdgeInsets get textPading => EdgeInsets.all(2 * scale);
+  EdgeInsets get textPadding => EdgeInsets.all(2 * scale);
 
   /// 默认指标线图的宽度
   double get indicatorLineWidth {
@@ -72,7 +72,7 @@ extension IFlexiKlineThemeExt on IFlexiKlineTheme {
   }
 
   // 默认文本配置
-  double get normalTextSize => setSp(defaulTextSize);
+  double get normalTextSize => setSp(defaultTextSize);
 }
 
 abstract class BaseFlexiKlineTheme implements IFlexiKlineTheme {
@@ -531,7 +531,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
           magnificationScale: 2,
           margin: EdgeInsets.all(1 * theme.scale),
           size: Size(80 * theme.scale, 80 * theme.scale),
-          decorationOpactity: 1.0,
+          decorationOpacity: 1.0,
           decorationShadows: [
             BoxShadow(
               offset: const Offset(0.1, 0.1),
@@ -673,7 +673,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
             ),
             // minWidth: 45 * theme.scale,
             textAlign: TextAlign.center,
-            padding: theme.textPading,
+            padding: theme.textPadding,
             background: theme.latestPriceTextBg,
             border: BorderSide(
               color: theme.markLineColor,
@@ -700,7 +700,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
             height: defaultTextHeight,
           ),
           textAlign: TextAlign.center,
-          padding: theme.textPading,
+          padding: theme.textPadding,
           background: theme.countDownTextBg,
           border: BorderSide(
             color: theme.markLineColor,

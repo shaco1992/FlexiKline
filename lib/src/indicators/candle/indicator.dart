@@ -201,7 +201,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     final offset = startCandleDx - candleWidthHalf;
     final barWidthHalf = candleWidthHalf - candleSpacing;
 
-    Offset? maxHihgOffset, minLowOffset;
+    Offset? maxHighOffset, minLowOffset;
     final hasEnough = paintDxOffset > 0;
     BagNum maxHigh = klineData[start].high;
     BagNum minLow = klineData[start].low;
@@ -209,14 +209,14 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     for (var i = start; i < end; i++) {
       m = klineData[i];
       final dx = offset - (i - start) * candleActualWidth;
-      final hight = valueToDy(m.high);
-      final low = valueToDy(m.low);
+      final highY = valueToDy(m.high);
+      final lowY = valueToDy(m.low);
       paintCandleBar(
         canvas,
         m,
         dx: dx,
-        high: hight,
-        low: low,
+        high: highY,
+        low: lowY,
         barWidthHalf: barWidthHalf,
         chartStyle: indicator.chartBarStyle,
       );
@@ -225,13 +225,13 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         if (hasEnough) {
           // 满足一屏, 根据initData中的最大最小值来记录最大最小偏移量.
           if (m.high == _maxHigh) {
-            maxHihgOffset = Offset(dx, hight);
+            maxHighOffset = Offset(dx, highY);
             maxHigh = _maxHigh!;
           }
         } else {
           // 如果当前绘制不足一屏, 最大最小绘制仅限可见区域.
           if (m.high >= maxHigh) {
-            maxHihgOffset = Offset(dx, hight);
+            maxHighOffset = Offset(dx, highY);
             maxHigh = m.high;
           }
         }
@@ -241,13 +241,13 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         if (hasEnough) {
           // 满足一屏, 根据initData中的最大最小值来记录最大最小偏移量.
           if (m.low == _minLow) {
-            minLowOffset = Offset(dx, low);
+            minLowOffset = Offset(dx, lowY);
             minLow = _minLow!;
           }
         } else {
           // 如果当前绘制不足一屏, 最大最小绘制仅限可见区域.
           if (m.low <= minLow) {
-            minLowOffset = Offset(dx, low);
+            minLowOffset = Offset(dx, lowY);
             minLow = m.low;
           }
         }
@@ -255,8 +255,8 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     }
 
     // 最后绘制在蜡烛图中的最大价钱标记
-    if (maxHihgOffset != null && maxHigh > BagNum.zero) {
-      paintPriceMark(canvas, maxHihgOffset, maxHigh, indicator.high);
+    if (maxHighOffset != null && maxHigh > BagNum.zero) {
+      paintPriceMark(canvas, maxHighOffset, maxHigh, indicator.high);
     }
     // 最后绘制在蜡烛图中的最小价钱标记
     if (minLowOffset != null && minLow > BagNum.zero) {

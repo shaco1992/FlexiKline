@@ -374,7 +374,7 @@ mixin DrawObjectMixin on DrawStateObject {
 
 extension IDrawContextExt on IDrawContext {
   /// 以当前蜡烛图绘制参数为基础, 将绘制参数[point]转换Offset坐标.
-  Offset? calcuateDrawPointOffset(Point point) {
+  Offset? calculateDrawPointOffset(Point point) {
     final dy = valueToDy(point.value);
     if (dy == null) return null;
 

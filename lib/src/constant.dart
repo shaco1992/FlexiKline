@@ -54,10 +54,10 @@ const int defaultSubTickCount = 3;
 const double defaultIndicatorLineWidth = 1;
 
 // 默认文本配置
-const double defaulTextSize = 10;
+const double defaultTextSize = 10;
 
 // 默认文本区域Padding
-const EdgeInsets defaultTextPading = EdgeInsets.all(2);
+const EdgeInsets defaultTextPadding = EdgeInsets.all(2);
 
 // 默认文本高度
 const double defaultTextHeight = 1;
@@ -209,7 +209,7 @@ enum TooltipLabel {
   turnover;
 }
 
-const Map<TooltipLabel, String> defaultTooltipLables = {
+const Map<TooltipLabel, String> defaultTooltipLabels = {
   TooltipLabel.time: 'Time',
   TooltipLabel.open: 'Open',
   TooltipLabel.high: 'High',

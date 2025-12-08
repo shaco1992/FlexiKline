@@ -16,7 +16,7 @@ FlexiKline是一个灵活且高度可定制化的金融Kline图表框架，旨�
 + 适配多平台手势操作, 且可定制化操作(惯性平移/缩放位置等).
 + 支持多种平台(Android, iOS, Web, MacOs, Windows, Linux).
 
-![架构](./doc/archiecture.excalidraw.png)
+![架构](./doc/architecture.excalidraw.png)
 
 ## Sample
 

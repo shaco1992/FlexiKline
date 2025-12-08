@@ -45,7 +45,7 @@ abstract class KlineBindingBase with KlineLog implements ISetting, IPaintContext
           configuration: configuration,
           logger: logger,
         ) {
-    logd('constrouct');
+    logd('construct');
     loggerDelegate = logger;
     init();
   }

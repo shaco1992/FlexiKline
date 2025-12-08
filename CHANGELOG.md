@@ -1,3 +1,7 @@
+## 1.2.0
+* Fix multiple naming typos in public APIs (Breaking Changes).
+
+
 ## 1.1.1
 * Add listening for the painting range changes.
 * Optimize the minmax of chart when no market fluctuation.
