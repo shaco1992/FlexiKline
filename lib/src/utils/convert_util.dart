@@ -129,7 +129,10 @@ Color? parseHexColor(String? hexStr, {Color? def}) {
 
 String? convertHexColor(Color? color, {String? def}) {
   if (color == null) return def;
-  return '0x${color.toARGB32().toRadixString(16).padLeft(8, '0')}';
+  // Use color.value instead of color.toARGB32() for compatibility with Flutter < 3.29
+  // toARGB32() was introduced in Flutter 3.29, but we need to support Flutter 3.24.0+
+  // ignore: deprecated_member_use
+  return '0x${color.value.toRadixString(16).padLeft(8, '0')}';
 }
 
 FontStyle parseFontStyle(

@@ -7,6 +7,13 @@ FlexiKline是一个灵活且高度可定制化的金融Kline图表框架，旨�
 
 [Android apk](https://github.com/FlexiKline/FlexiKline.github.io/blob/main/mobile/flexi_kline_app.apk)
 
+## 版本要求
+
+- **Flutter SDK**: >= 3.24.0
+- **Dart SDK**: >= 3.5.0
+
+> **注意**: 本项目开发时可能使用较新的 Flutter 版本，但代码已确保兼容 `pubspec.yaml` 中声明的最低版本要求。如果遇到版本兼容性问题，请参考 [开发指南](./doc/DEVELOPMENT.md#版本兼容性检查)。
+
 ## 特性
 
 + 自定义指标(实现指标配置与绘制对象接口).
