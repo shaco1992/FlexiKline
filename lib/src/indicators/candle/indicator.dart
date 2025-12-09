@@ -34,6 +34,8 @@ class CandleIndicator extends CandleBaseIndicator {
     /// 最新价: 当最新蜡烛在可视区域时使用.
     /// 注: 如果其中线的配置颜色透明度为0(默认为0) 且useCandleColorAsLatestBg为true,则会采用涨跌色
     required this.latest,
+    this.latestPoint,
+    this.showLatestPoint = true,
 
     /// 使用蜡烛颜色做为Latest的背景
     this.useCandleColorAsLatestBg = true,
@@ -63,6 +65,10 @@ class CandleIndicator extends CandleBaseIndicator {
   /// 最新价: 当最新蜡烛在可视区域时使用.
   /// 注: 如果其中线的配置颜色透明度为0(默认为0) 且useCandleColorAsLatestBg为true,则会采用涨跌色
   final MarkConfig latest;
+
+  /// 最新蜡烛点: 仅在线图中使用.
+  final PointConfig? latestPoint;
+  final bool showLatestPoint;
 
   /// 使用蜡烛颜色做为Latest的背景
   final bool useCandleColorAsLatestBg;
@@ -112,6 +118,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
 
   BagNum? _maxHigh, _minLow;
 
+  @override
   ChartType getChartType() {
     if (klineData.isTimeChart) {
       return indicator.secondsChartType ?? indicator.chartType;
@@ -148,12 +155,14 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
             strokeWidth: candleLineWidth,
           ),
         );
+        paintLatestCandlePoint(canvas, size);
       case ChartType.upDownLine:
         // 绘制蜡烛涨跌线图
         paintUpDownLineTypeCandleChart(
           canvas,
           startOffset: startCandleDx - candleWidthHalf,
         );
+        paintLatestCandlePoint(canvas, size);
     }
 
     /// 绘制价钱刻度数据
@@ -350,23 +359,25 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
   }
 
   /// 缓存latest文本相对于屏幕右侧的负偏移量
-  double _latestTextOffset = 0.0;
+  @protected
+  double latestTextOffset = 0.0;
 
   /// 缓存last文本所占大小
-  Size? _lastTextSize;
+  @protected
+  Size? lastTextSize;
 
   /// 最后价文本区域位置, 用于后续点击事件命中测试.
   Rect? get lastTextAreaRect {
-    if (_lastTextSize == null) return null;
+    if (lastTextSize == null) return null;
     final model = klineData.latest;
     if (model == null) return null;
     // 计算最新价YAxis位置.
     final dy = clampDyInChart(valueToDy(model.close));
     return Rect.fromLTWH(
-      chartRect.right + _latestTextOffset - indicator.last.spacing - _lastTextSize!.width,
+      chartRect.right + latestTextOffset - indicator.last.spacing - lastTextSize!.width,
       dy,
-      _lastTextSize!.width,
-      _lastTextSize!.height,
+      lastTextSize!.width,
+      lastTextSize!.height,
     );
   }
 
@@ -390,8 +401,8 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     final rdx = chartRect.right;
     double ldx = 0; // 计算最新价刻度线lineTo参数X轴的dx值. 默认0: 代表橫穿整个Canvas.
 
-    if (paintDxOffset < _latestTextOffset) {
-      _lastTextSize = null;
+    if (paintDxOffset < latestTextOffset) {
+      lastTextSize = null;
       // 绘制最新价和倒计时
       MarkConfig latest = indicator.latest;
       if (!latest.show) return;
@@ -476,7 +487,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         backgroundColor: background,
         borderRadius: borderRadius,
       );
-      _latestTextOffset = -(size.width + latest.spacing);
+      latestTextOffset = -(size.width + latest.spacing);
 
       if (countDownText != null) {
         TextAreaConfig countDown;
@@ -547,11 +558,11 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
 
       /// 绘制横穿画板的最后价刻度线.
       final lastPath = Path();
-      if (_lastTextSize != null) {
-        final lastTextAreaRight = rdx + _latestTextOffset - last.spacing;
+      if (lastTextSize != null) {
+        final lastTextAreaRight = rdx + latestTextOffset - last.spacing;
         lastPath.moveTo(rdx, dy);
         lastPath.lineTo(lastTextAreaRight, dy);
-        lastPath.moveTo(lastTextAreaRight - _lastTextSize!.width, dy);
+        lastPath.moveTo(lastTextAreaRight - lastTextSize!.width, dy);
         lastPath.lineTo(ldx, dy);
       } else {
         lastPath.moveTo(rdx, dy);
@@ -569,9 +580,9 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
       );
 
       /// 绘制最后价标记
-      _lastTextSize = canvas.drawTextArea(
+      lastTextSize = canvas.drawTextArea(
         offset: Offset(
-          rdx + _latestTextOffset - last.spacing,
+          rdx + latestTextOffset - last.spacing,
           dy - halfHeight, // 居中
         ),
         drawDirection: DrawDirection.rtl,
@@ -580,6 +591,32 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         textConfig: lastText,
       );
     }
+  }
+
+  /// 绘制最新蜡烛点
+  void paintLatestCandlePoint(Canvas canvas, Size size) {
+    if (!indicator.showLatestPoint) return;
+    if (indicator.latestPoint == null) return;
+    final model = klineData.latest;
+    if (model == null) {
+      logd('paintLatestCandlePoint > on data!');
+      return;
+    }
+    if (paintDxOffset > latestTextOffset) {
+      // 最新价在屏幕右侧, 不绘制点
+      // logd('paintLatestCandlePoint > latestPoint is on the right of the screen!');
+      return;
+    }
+
+    final point = indicator.latestPoint!;
+    final offset = Offset(
+      startCandleDx - candleWidthHalf,
+      clampDyInChart(valueToDy(model.close)),
+    );
+    canvas.drawCirclePoint(
+      offset,
+      point,
+    );
   }
 
   @override

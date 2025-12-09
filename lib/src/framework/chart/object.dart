@@ -165,6 +165,9 @@ abstract class CandleBasePaintObject<T extends CandleBaseIndicator> extends Pain
     required T super.indicator,
   });
 
+  /// 获取当前蜡烛图的绘制类型.
+  ChartType getChartType();
+
   @nonVirtual
   void moveToInitialPosition() {
     (_context as StateBinding).moveToInitialPosition();
@@ -202,6 +205,32 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
   }) : children = SortableHashSet<PaintObject>.from(<PaintObject>[], (a, b) => a.compareTo(b));
 
   final SortableHashSet<PaintObject> children;
+
+  Set<PaintObject> get paintableChildren {
+    if (onlyMainChart) {
+      return children.where((object) => object.key == candleIndicatorKey).toSet();
+    }
+    return children;
+  }
+
+  /// 获取蜡烛图绘制对象
+  CandleBasePaintObject? get _candlePaintObject {
+    return children.firstWhereOrNull(
+      (obj) => obj.key == candleIndicatorKey,
+    ) as CandleBasePaintObject?;
+  }
+
+  /// 是否只绘制主图（隐藏其他技术指标）
+  /// 当图表类型为线图时，隐藏技术指标以避免线条重合
+  bool get onlyMainChart {
+    if (!settingConfig.hideIndicatorsInTimeChart) return false;
+
+    final candleObject = _candlePaintObject;
+    if (candleObject == null) return false;
+
+    // 根据实际的图表类型判断，而不仅仅是时间周期
+    return candleObject.getChartType() != ChartType.bar;
+  }
 
   @override
   T get indicator => _indicator as T;

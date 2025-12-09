@@ -126,12 +126,11 @@ final class FlexiTimeBar implements ITimeBar {
     return other is ITimeBar &&
         runtimeType == other.runtimeType &&
         bar == other.bar &&
-        multiplier == other.multiplier &&
-        unit == other.unit;
+        milliseconds == other.milliseconds;
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ multiplier.hashCode ^ unit.hashCode;
+  int get hashCode => runtimeType.hashCode ^ bar.hashCode ^ milliseconds.hashCode;
 
   @override
   String toString() => '$bar:$milliseconds';
@@ -166,7 +165,7 @@ enum TimeBar implements ITimeBar {
   utc1D('1Dutc', 1, TimeUnit.day),
   utc2D('2Dutc', 2, TimeUnit.day),
   utc3D('3Dutc', 3, TimeUnit.day),
-  utc1W('1Wutc', 7, TimeUnit.week),
+  utc1W('1Wutc', 1, TimeUnit.week),
   utc1M('1Mutc', 1, TimeUnit.month),
   utc3M('3Mutc', 3, TimeUnit.month);
 

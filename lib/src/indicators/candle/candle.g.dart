@@ -21,6 +21,10 @@ abstract class _$CandleIndicatorCWProxy {
 
   CandleIndicator latest(MarkConfig latest);
 
+  CandleIndicator latestPoint(PointConfig? latestPoint);
+
+  CandleIndicator showLatestPoint(bool showLatestPoint);
+
   CandleIndicator useCandleColorAsLatestBg(bool useCandleColorAsLatestBg);
 
   CandleIndicator showCountDown(bool showCountDown);
@@ -55,6 +59,8 @@ abstract class _$CandleIndicatorCWProxy {
     MarkConfig low,
     MarkConfig last,
     MarkConfig latest,
+    PointConfig? latestPoint,
+    bool showLatestPoint,
     bool useCandleColorAsLatestBg,
     bool showCountDown,
     TextAreaConfig countDown,
@@ -94,6 +100,14 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
 
   @override
   CandleIndicator latest(MarkConfig latest) => this(latest: latest);
+
+  @override
+  CandleIndicator latestPoint(PointConfig? latestPoint) =>
+      this(latestPoint: latestPoint);
+
+  @override
+  CandleIndicator showLatestPoint(bool showLatestPoint) =>
+      this(showLatestPoint: showLatestPoint);
 
   @override
   CandleIndicator useCandleColorAsLatestBg(bool useCandleColorAsLatestBg) =>
@@ -147,6 +161,8 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
     Object? low = const $CopyWithPlaceholder(),
     Object? last = const $CopyWithPlaceholder(),
     Object? latest = const $CopyWithPlaceholder(),
+    Object? latestPoint = const $CopyWithPlaceholder(),
+    Object? showLatestPoint = const $CopyWithPlaceholder(),
     Object? useCandleColorAsLatestBg = const $CopyWithPlaceholder(),
     Object? showCountDown = const $CopyWithPlaceholder(),
     Object? countDown = const $CopyWithPlaceholder(),
@@ -187,6 +203,14 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
           ? _value.latest
           // ignore: cast_nullable_to_non_nullable
           : latest as MarkConfig,
+      latestPoint: latestPoint == const $CopyWithPlaceholder()
+          ? _value.latestPoint
+          // ignore: cast_nullable_to_non_nullable
+          : latestPoint as PointConfig?,
+      showLatestPoint: showLatestPoint == const $CopyWithPlaceholder()
+          ? _value.showLatestPoint
+          // ignore: cast_nullable_to_non_nullable
+          : showLatestPoint as bool,
       useCandleColorAsLatestBg:
           useCandleColorAsLatestBg == const $CopyWithPlaceholder()
               ? _value.useCandleColorAsLatestBg
@@ -254,6 +278,10 @@ CandleIndicator _$CandleIndicatorFromJson(Map<String, dynamic> json) =>
       low: MarkConfig.fromJson(json['low'] as Map<String, dynamic>),
       last: MarkConfig.fromJson(json['last'] as Map<String, dynamic>),
       latest: MarkConfig.fromJson(json['latest'] as Map<String, dynamic>),
+      latestPoint: json['latestPoint'] == null
+          ? null
+          : PointConfig.fromJson(json['latestPoint'] as Map<String, dynamic>),
+      showLatestPoint: json['showLatestPoint'] as bool? ?? true,
       useCandleColorAsLatestBg:
           json['useCandleColorAsLatestBg'] as bool? ?? true,
       showCountDown: json['showCountDown'] as bool? ?? true,
@@ -287,6 +315,8 @@ Map<String, dynamic> _$CandleIndicatorToJson(CandleIndicator instance) =>
       'low': instance.low.toJson(),
       'last': instance.last.toJson(),
       'latest': instance.latest.toJson(),
+      'latestPoint': instance.latestPoint?.toJson(),
+      'showLatestPoint': instance.showLatestPoint,
       'useCandleColorAsLatestBg': instance.useCandleColorAsLatestBg,
       'showCountDown': instance.showCountDown,
       'countDown': instance.countDown.toJson(),

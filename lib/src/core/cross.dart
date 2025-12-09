@@ -271,7 +271,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
       // 点击区域在右边; 绘制在左边
       final offset = Offset(
         mainRect.left + tooltipConfig.margin.left,
-        mainRect.top + top,
+        top,
       );
 
       final size = canvas.drawText(
@@ -316,7 +316,7 @@ mixin CrossBinding on KlineBindingBase, SettingBinding implements ICross {
       // 点击区域在左边; 绘制在右边
       final offset = Offset(
         mainRect.right - tooltipConfig.margin.right,
-        mainRect.top + top,
+        top,
       );
 
       final size = canvas.drawText(

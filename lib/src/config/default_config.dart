@@ -300,8 +300,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
 
       /// 主/副图绘制参数
       minPaintBlankRate: setting?.minPaintBlankRate ?? 0.5,
-      alwaysCalculateScreenOfCandlesIfEnough:
-          setting?.alwaysCalculateScreenOfCandlesIfEnough ?? false,
+      alwaysCalculateScreenOfCandlesIfEnough: setting?.alwaysCalculateScreenOfCandlesIfEnough ?? false,
       candleMinWidth: setting?.candleMinWidth ?? 1 * theme.pixel,
       candleMaxWidth: setting?.candleMaxWidth ?? 40 * theme.scale,
       candleWidth: setting?.candleWidth ?? 7 * theme.scale,
@@ -316,6 +315,9 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
 
       /// 是否展示Y轴刻度.
       showYAxisTick: setting?.showYAxisTick ?? true,
+
+      /// 在线图模式(timeBar <= 1秒)时, 是否隐藏技术指标线, 只显示主线图.
+      hideIndicatorsInTimeChart: setting?.allowPaintExtraOutsideMainRect ?? false,
     );
   }
 
@@ -650,6 +652,20 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         textColor: theme.lastPriceTextColor,
         background: theme.lastPriceTextBg,
         borderColor: instance?.high.text.border?.color,
+      ),
+      showLatestPoint: instance?.showLatestPoint ?? true,
+      latestPoint: obtainConfig(
+        instance?.latestPoint,
+        PointConfig(
+          radius: 2 * theme.scale,
+          width: 0 * theme.scale,
+          color: theme.lineChartColor,
+          borderColor: theme.lineChartColor.withAlpha(0.5.alpha),
+          borderWidth: 2 * theme.scale,
+        ),
+      ).of(
+        color: theme.lineChartColor,
+        borderColor: theme.lineChartColor.withAlpha(0.5.alpha),
       ),
       latest: obtainConfig(
         instance?.latest,

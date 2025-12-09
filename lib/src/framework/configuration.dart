@@ -202,9 +202,10 @@ T? jsonToInstance<T>(Map<String, dynamic>? json, FromJson<T> fromJson) {
   return null;
 }
 
-extension IConfigurationExt on IConfiguration {
-  T obtainConfig<T>(T? config, T newConfig) => config ?? newConfig;
+/// 合并配置
+T obtainConfig<T>(T? config, T newConfig) => config ?? newConfig;
 
+extension IConfigurationExt on IConfiguration {
   FlexiKlineConfig getFlexiKlineConfig() {
     FlexiKlineConfig? config;
     try {

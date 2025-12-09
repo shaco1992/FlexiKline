@@ -165,7 +165,7 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
     }
     if (hasChange) resetPaintBounding();
 
-    for (final object in children) {
+    for (final object in paintableChildren) {
       final childChange = object.doUpdateLayout(
         height: object.paintMode.isCombine ? height : null,
         padding: object.paintMode.isCombine ? padding : null,
@@ -195,7 +195,7 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
     }
 
     _minMax = null;
-    for (final object in children) {
+    for (final object in paintableChildren) {
       final ret = object.doInitState(
         newSlot,
         start: start,
@@ -207,7 +207,7 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
       }
     }
 
-    for (final object in children) {
+    for (final object in paintableChildren) {
       if (object.paintMode == PaintMode.combine) {
         object.setMinMax(minMax);
       }
@@ -238,11 +238,11 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
           );
         }
       }
-      for (final object in children) {
+      for (final object in paintableChildren) {
         object.paintChart(canvas, size);
       }
     } else {
-      for (final object in children) {
+      for (final object in paintableChildren) {
         object.paintChart(canvas, size);
       }
       if (!isCrossing) {
@@ -252,7 +252,7 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
   }
 
   void doPaintExtraAboveChart(Canvas canvas, Size size) {
-    for (final object in children) {
+    for (final object in paintableChildren) {
       object.paintExtraAboveChart(canvas, size);
     }
   }
@@ -270,11 +270,11 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
           );
         }
       }
-      for (final object in children) {
+      for (final object in paintableChildren) {
         object.onCross(canvas, offset);
       }
     } else {
-      for (final object in children) {
+      for (final object in paintableChildren) {
         object.onCross(canvas, offset);
       }
       if (isCrossing) {
@@ -286,7 +286,7 @@ extension MainPaintDelegateExt<T extends MainPaintObjectIndicator> on MainPaintO
   double doPaintTips(Canvas canvas, {CandleModel? model, Offset? offset}) {
     // 每次绘制前, 重置Tips区域大小为0
     double height = 0;
-    for (final object in children.originList) {
+    for (final object in paintableChildren) {
       final size = object.paintTips(
         canvas,
         model: model,
