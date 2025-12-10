@@ -2,6 +2,7 @@
 * Fix multiple naming typos in public APIs (Breaking Changes).
 * Add latest candle point marker and time chart indicator hiding options
 * Refactor ChartType from enum to sealed class with integrated style encapsulation (Breaking Changes).
+* Replace LinearGradient with GradientConfig for better serialization and flexibility; rename chart painting methods (Breaking Changes).
 
 
 ## 1.1.1

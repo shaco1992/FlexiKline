@@ -448,3 +448,76 @@ Curve parseCurve(String curvestr) {
   }
   return Curves.decelerate;
 }
+
+/// 解析 Alignment 对象
+/// 支持预设值和自定义 x, y 坐标
+Alignment? parseAlignment(Map<String, dynamic>? json) {
+  if (json == null || json.isEmpty) return null;
+
+  final preset = json['preset']?.toString();
+  if (preset != null) {
+    switch (preset) {
+      case 'topLeft':
+        return Alignment.topLeft;
+      case 'topCenter':
+        return Alignment.topCenter;
+      case 'topRight':
+        return Alignment.topRight;
+      case 'centerLeft':
+        return Alignment.centerLeft;
+      case 'center':
+        return Alignment.center;
+      case 'centerRight':
+        return Alignment.centerRight;
+      case 'bottomLeft':
+        return Alignment.bottomLeft;
+      case 'bottomCenter':
+        return Alignment.bottomCenter;
+      case 'bottomRight':
+        return Alignment.bottomRight;
+    }
+  }
+
+  if (json.containsKey('x') && json.containsKey('y')) {
+    return Alignment(
+      parseDouble(json['x']) ?? 0.0,
+      parseDouble(json['y']) ?? 0.0,
+    );
+  }
+
+  return null;
+}
+
+/// 将 Alignment 对象转换为 Map
+Map<String, dynamic> convertAlignment(Alignment alignment) {
+  // 尝试匹配预定义常量
+  if (alignment == Alignment.topLeft) return {'preset': 'topLeft'};
+  if (alignment == Alignment.topCenter) return {'preset': 'topCenter'};
+  if (alignment == Alignment.topRight) return {'preset': 'topRight'};
+  if (alignment == Alignment.centerLeft) return {'preset': 'centerLeft'};
+  if (alignment == Alignment.center) return {'preset': 'center'};
+  if (alignment == Alignment.centerRight) return {'preset': 'centerRight'};
+  if (alignment == Alignment.bottomLeft) return {'preset': 'bottomLeft'};
+  if (alignment == Alignment.bottomCenter) return {'preset': 'bottomCenter'};
+  if (alignment == Alignment.bottomRight) return {'preset': 'bottomRight'};
+
+  // 自定义值
+  return {
+    'x': alignment.x,
+    'y': alignment.y,
+  };
+}
+
+/// 解析 TileMode 枚举
+TileMode? parseTileMode(String? modeStr) {
+  if (modeStr == null) return null;
+  return TileMode.values.firstWhere(
+    (e) => e.name == modeStr,
+    orElse: () => TileMode.clamp,
+  );
+}
+
+/// 将 TileMode 转换为字符串
+String convertTileMode(TileMode mode) {
+  return mode.name;
+}

@@ -548,6 +548,136 @@ class ClipConverter implements JsonConverter<Clip, String> {
   }
 }
 
+/// Alignment 序列化转换器
+class AlignmentConverter implements JsonConverter<Alignment, Map<String, dynamic>> {
+  const AlignmentConverter();
+
+  @override
+  Alignment fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) return Alignment.center;
+
+    // 支持预定义的 Alignment 常量
+    final preset = json['preset']?.toString();
+    if (preset != null) {
+      switch (preset) {
+        case 'topLeft':
+          return Alignment.topLeft;
+        case 'topCenter':
+          return Alignment.topCenter;
+        case 'topRight':
+          return Alignment.topRight;
+        case 'centerLeft':
+          return Alignment.centerLeft;
+        case 'center':
+          return Alignment.center;
+        case 'centerRight':
+          return Alignment.centerRight;
+        case 'bottomLeft':
+          return Alignment.bottomLeft;
+        case 'bottomCenter':
+          return Alignment.bottomCenter;
+        case 'bottomRight':
+          return Alignment.bottomRight;
+      }
+    }
+
+    // 支持自定义 x, y 值
+    if (json.containsKey('x') && json.containsKey('y')) {
+      return Alignment(
+        parseDouble(json['x']) ?? 0.0,
+        parseDouble(json['y']) ?? 0.0,
+      );
+    }
+
+    return Alignment.center;
+  }
+
+  @override
+  Map<String, dynamic> toJson(Alignment alignment) {
+    // 尝试匹配预定义常量
+    if (alignment == Alignment.topLeft) return {'preset': 'topLeft'};
+    if (alignment == Alignment.topCenter) return {'preset': 'topCenter'};
+    if (alignment == Alignment.topRight) return {'preset': 'topRight'};
+    if (alignment == Alignment.centerLeft) return {'preset': 'centerLeft'};
+    if (alignment == Alignment.center) return {'preset': 'center'};
+    if (alignment == Alignment.centerRight) return {'preset': 'centerRight'};
+    if (alignment == Alignment.bottomLeft) return {'preset': 'bottomLeft'};
+    if (alignment == Alignment.bottomCenter) return {'preset': 'bottomCenter'};
+    if (alignment == Alignment.bottomRight) return {'preset': 'bottomRight'};
+
+    // 自定义值
+    return {
+      'x': alignment.x,
+      'y': alignment.y,
+    };
+  }
+}
+
+/// TileMode 序列化转换器
+class TileModeConverter implements JsonConverter<TileMode, String> {
+  const TileModeConverter();
+
+  @override
+  TileMode fromJson(String json) {
+    return TileMode.values.firstWhere(
+      (e) => e.name == json,
+      orElse: () => TileMode.clamp,
+    );
+  }
+
+  @override
+  String toJson(TileMode mode) {
+    return mode.name;
+  }
+}
+
+/// LinearGradient 序列化转换器
+class LinearGradientConverter implements JsonConverter<LinearGradient, Map<String, dynamic>> {
+  const LinearGradientConverter();
+
+  @override
+  LinearGradient fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) {
+      return const LinearGradient(colors: []);
+    }
+
+    // 解析颜色列表
+    final colorsList = json['colors'] as List<dynamic>?;
+    final colors = colorsList?.map((c) {
+          if (c is String) {
+            return parseHexColor(c) ?? const Color(0x00000000);
+          } else if (c is int) {
+            return Color(c);
+          }
+          return const Color(0x00000000);
+        }).toList() ??
+        [];
+
+    // 解析 stops
+    final stopsList = json['stops'] as List<dynamic>?;
+    final stops = stopsList?.map((s) => parseDouble(s) ?? 0.0).toList();
+
+    return LinearGradient(
+      begin: json.containsKey('begin') ? const AlignmentConverter().fromJson(json['begin']) : Alignment.centerLeft,
+      end: json.containsKey('end') ? const AlignmentConverter().fromJson(json['end']) : Alignment.centerRight,
+      colors: colors,
+      stops: stops,
+      tileMode: json.containsKey('tileMode') ? const TileModeConverter().fromJson(json['tileMode']) : TileMode.clamp,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson(LinearGradient gradient) {
+    return {
+      'begin': const AlignmentConverter().toJson(gradient.begin as Alignment),
+      'end': const AlignmentConverter().toJson(gradient.end as Alignment),
+      'colors': gradient.colors.map((c) => convertHexColor(c)).toList(),
+      if (gradient.stops != null) 'stops': gradient.stops,
+      'tileMode': const TileModeConverter().toJson(gradient.tileMode),
+    };
+  }
+}
+
 class BoxShadowConverter implements JsonConverter<BoxShadow, Map<String, dynamic>> {
   const BoxShadowConverter();
 
@@ -692,6 +822,9 @@ const _basicConverterList = <JsonConverter>[
   BorderConverter(),
   BorderRadiusConverter(),
   ClipConverter(),
+  AlignmentConverter(),
+  TileModeConverter(),
+  LinearGradientConverter(),
   BoxShadowConverter(),
   OffsetConverter(),
   TextAlignConvert(),

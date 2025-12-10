@@ -735,6 +735,9 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       longColor: instance?.longColor,
       shortColor: instance?.shortColor,
       lineColor: instance?.lineColor,
+      lineGradientConfig: instance?.lineGradientConfig,
+      longGradientConfig: instance?.longGradientConfig,
+      shortGradientConfig: instance?.shortGradientConfig,
     );
   }
 

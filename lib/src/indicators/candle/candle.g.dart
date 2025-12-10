@@ -43,6 +43,12 @@ abstract class _$CandleIndicatorCWProxy {
 
   CandleIndicator lineColor(Color? lineColor);
 
+  CandleIndicator lineGradientConfig(GradientConfig? lineGradientConfig);
+
+  CandleIndicator longGradientConfig(GradientConfig? longGradientConfig);
+
+  CandleIndicator shortGradientConfig(GradientConfig? shortGradientConfig);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CandleIndicator(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -68,6 +74,9 @@ abstract class _$CandleIndicatorCWProxy {
     Color? longColor,
     Color? shortColor,
     Color? lineColor,
+    GradientConfig? lineGradientConfig,
+    GradientConfig? longGradientConfig,
+    GradientConfig? shortGradientConfig,
   });
 }
 
@@ -139,6 +148,18 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
   CandleIndicator lineColor(Color? lineColor) => this(lineColor: lineColor);
 
   @override
+  CandleIndicator lineGradientConfig(GradientConfig? lineGradientConfig) =>
+      this(lineGradientConfig: lineGradientConfig);
+
+  @override
+  CandleIndicator longGradientConfig(GradientConfig? longGradientConfig) =>
+      this(longGradientConfig: longGradientConfig);
+
+  @override
+  CandleIndicator shortGradientConfig(GradientConfig? shortGradientConfig) =>
+      this(shortGradientConfig: shortGradientConfig);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CandleIndicator(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -165,6 +186,9 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
     Object? longColor = const $CopyWithPlaceholder(),
     Object? shortColor = const $CopyWithPlaceholder(),
     Object? lineColor = const $CopyWithPlaceholder(),
+    Object? lineGradientConfig = const $CopyWithPlaceholder(),
+    Object? longGradientConfig = const $CopyWithPlaceholder(),
+    Object? shortGradientConfig = const $CopyWithPlaceholder(),
   }) {
     return CandleIndicator(
       zIndex: zIndex == const $CopyWithPlaceholder()
@@ -241,6 +265,18 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
           ? _value.lineColor
           // ignore: cast_nullable_to_non_nullable
           : lineColor as Color?,
+      lineGradientConfig: lineGradientConfig == const $CopyWithPlaceholder()
+          ? _value.lineGradientConfig
+          // ignore: cast_nullable_to_non_nullable
+          : lineGradientConfig as GradientConfig?,
+      longGradientConfig: longGradientConfig == const $CopyWithPlaceholder()
+          ? _value.longGradientConfig
+          // ignore: cast_nullable_to_non_nullable
+          : longGradientConfig as GradientConfig?,
+      shortGradientConfig: shortGradientConfig == const $CopyWithPlaceholder()
+          ? _value.shortGradientConfig
+          // ignore: cast_nullable_to_non_nullable
+          : shortGradientConfig as GradientConfig?,
     );
   }
 }
@@ -290,6 +326,18 @@ CandleIndicator _$CandleIndicatorFromJson(Map<String, dynamic> json) =>
           json['shortColor'], const ColorConverter().fromJson),
       lineColor: _$JsonConverterFromJson<String, Color>(
           json['lineColor'], const ColorConverter().fromJson),
+      lineGradientConfig: json['lineGradientConfig'] == null
+          ? GradientPresets.lineChart
+          : GradientConfig.fromJson(
+              json['lineGradientConfig'] as Map<String, dynamic>),
+      longGradientConfig: json['longGradientConfig'] == null
+          ? GradientPresets.long
+          : GradientConfig.fromJson(
+              json['longGradientConfig'] as Map<String, dynamic>),
+      shortGradientConfig: json['shortGradientConfig'] == null
+          ? GradientPresets.short
+          : GradientConfig.fromJson(
+              json['shortGradientConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CandleIndicatorToJson(CandleIndicator instance) =>
@@ -319,6 +367,9 @@ Map<String, dynamic> _$CandleIndicatorToJson(CandleIndicator instance) =>
           instance.shortColor, const ColorConverter().toJson),
       'lineColor': _$JsonConverterToJson<String, Color>(
           instance.lineColor, const ColorConverter().toJson),
+      'lineGradientConfig': instance.lineGradientConfig?.toJson(),
+      'longGradientConfig': instance.longGradientConfig?.toJson(),
+      'shortGradientConfig': instance.shortGradientConfig?.toJson(),
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

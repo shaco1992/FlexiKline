@@ -49,6 +49,9 @@ class CandleIndicator extends CandleBaseIndicator {
     this.longColor,
     this.shortColor,
     this.lineColor,
+    this.lineGradientConfig = GradientPresets.lineChart,
+    this.longGradientConfig = GradientPresets.long,
+    this.shortGradientConfig = GradientPresets.short,
   });
 
   /// 最高价
@@ -91,6 +94,15 @@ class CandleIndicator extends CandleBaseIndicator {
   final Color? shortColor;
   // 自定义line图颜色
   final Color? lineColor;
+
+  /// 自定义line图渐变配置. 如果为 null，则不绘制渐变填充，仅绘制线条
+  final GradientConfig? lineGradientConfig;
+
+  /// 自定义上涨渐变配置. 如果为 null，则不绘制上涨区域的渐变填充
+  final GradientConfig? longGradientConfig;
+
+  /// 自定义下跌渐变配置. 如果为 null，则不绘制下跌区域的渐变填充
+  final GradientConfig? shortGradientConfig;
 
   @override
   CandlePaintObject createPaintObject(IPaintContext context) {
@@ -150,20 +162,34 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         switch (style) {
           case LineChartStyle.normal:
             // 绘制普通折线图
-            paintLineTypeCandleChart(
+            paintCandleLineChart(
               canvas,
               startOffset: startCandleDx - candleWidthHalf,
               linePaint: getLinePaint(
                 color: indicator.lineColor,
                 strokeWidth: candleLineWidth,
               ),
+              gradient: indicator.lineGradientConfig?.createGradient(
+                baseColor: indicator.lineColor ?? theme.lineChartColor,
+                transparentColor: theme.transparent,
+              ),
             );
             paintLatestCandlePoint(canvas, size);
           case LineChartStyle.upDown:
             // 绘制涨跌线图
-            paintUpDownLineTypeCandleChart(
+            paintCandleUpDownLineChart(
               canvas,
               startOffset: startCandleDx - candleWidthHalf,
+              longLinePaint: getLinePaint(color: longColor),
+              shortLinePaint: getLinePaint(color: shortColor),
+              longGradient: indicator.longGradientConfig?.createGradient(
+                baseColor: longColor,
+                transparentColor: theme.transparent,
+              ),
+              shortGradient: indicator.shortGradientConfig?.createGradient(
+                baseColor: shortColor,
+                transparentColor: theme.transparent,
+              ),
             );
             paintLatestCandlePoint(canvas, size);
         }
