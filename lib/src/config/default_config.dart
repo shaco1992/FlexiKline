@@ -729,10 +729,9 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         background: theme.countDownTextBg,
         borderColor: theme.markLineColor,
       ),
-      chartBarStyle: instance?.chartBarStyle ?? ChartBarStyle.allSolid,
-      chartType: instance?.chartType ?? ChartType.bar,
-      zoomToMinChartType: instance?.zoomToMinChartType ?? ChartType.line,
-      secondsChartType: instance?.secondsChartType ?? ChartType.line,
+      chartType: instance?.chartType ?? ChartType.barSolid,
+      minCandleWidthChartType: instance?.minCandleWidthChartType ?? ChartType.lineNormal,
+      timeChartType: instance?.timeChartType ?? ChartType.lineNormal,
       longColor: instance?.longColor,
       shortColor: instance?.shortColor,
       lineColor: instance?.lineColor,
@@ -745,7 +744,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       padding: instance?.padding ?? EdgeInsets.zero,
       position: instance?.position ?? DrawPosition.middle,
       // 时间刻度.
-      timeTick: obtainConfig(
+      timeTick: obtainConfig( 
         instance?.timeTick,
         TextAreaConfig(
           style: TextStyle(

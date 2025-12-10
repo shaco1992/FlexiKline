@@ -225,11 +225,8 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
   bool get onlyMainChart {
     if (!settingConfig.hideIndicatorsInTimeChart) return false;
 
-    final candleObject = _candlePaintObject;
-    if (candleObject == null) return false;
-
     // 根据实际的图表类型判断，而不仅仅是时间周期
-    return candleObject.getChartType() != ChartType.bar;
+    return _candlePaintObject?.getChartType().isLine ?? false;
   }
 
   @override

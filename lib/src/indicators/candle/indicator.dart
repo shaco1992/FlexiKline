@@ -43,10 +43,9 @@ class CandleIndicator extends CandleBaseIndicator {
     /// 倒计时, 在latest最新价之下展示
     this.showCountDown = true,
     required this.countDown,
-    this.chartBarStyle = ChartBarStyle.allSolid,
-    this.chartType = ChartType.bar,
-    this.zoomToMinChartType,
-    this.secondsChartType,
+    required this.chartType,
+    this.minCandleWidthChartType,
+    this.timeChartType,
     this.longColor,
     this.shortColor,
     this.lineColor,
@@ -67,8 +66,8 @@ class CandleIndicator extends CandleBaseIndicator {
   final MarkConfig latest;
 
   /// 最新蜡烛点: 仅在线图中使用.
-  final PointConfig? latestPoint;
   final bool showLatestPoint;
+  final PointConfig? latestPoint;
 
   /// 使用蜡烛颜色做为Latest的背景
   final bool useCandleColorAsLatestBg;
@@ -77,14 +76,14 @@ class CandleIndicator extends CandleBaseIndicator {
   final bool showCountDown;
   final TextAreaConfig countDown;
 
-  // Kline图表柱状图样式
-  final ChartBarStyle chartBarStyle;
-  // Kline图表类型
+  /// Kline图表类型（包含样式）
   final ChartType chartType;
-  // Kline缩放到最小蜡烛宽度时图表类型
-  final ChartType? zoomToMinChartType;
-  // 秒级Kline图表类型
-  final ChartType? secondsChartType;
+
+  /// 最小蜡烛宽度时的图表类型（通常在缩小到极限时使用）
+  final ChartType? minCandleWidthChartType;
+
+  /// 时间图表类型
+  final ChartType? timeChartType;
 
   // 自定义上涨颜色
   final Color? longColor;
@@ -121,9 +120,9 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
   @override
   ChartType getChartType() {
     if (klineData.isTimeChart) {
-      return indicator.secondsChartType ?? indicator.chartType;
+      return indicator.timeChartType ?? indicator.chartType;
     } else if (candleWidth <= settingConfig.candleMinWidth) {
-      return indicator.zoomToMinChartType ?? indicator.chartType;
+      return indicator.minCandleWidthChartType ?? indicator.chartType;
     } else {
       return indicator.chartType;
     }
@@ -141,28 +140,33 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
 
   @override
   void paintChart(Canvas canvas, Size size) {
-    switch (getChartType()) {
-      case ChartType.bar:
-        // 绘制蜡烛柱状图
-        paintBarTypeCandleChart(canvas, size);
-      case ChartType.line:
-        // 绘制蜡烛线图
-        paintLineTypeCandleChart(
-          canvas,
-          startOffset: startCandleDx - candleWidthHalf,
-          linePaint: getLinePaint(
-            color: indicator.lineColor,
-            strokeWidth: candleLineWidth,
-          ),
-        );
-        paintLatestCandlePoint(canvas, size);
-      case ChartType.upDownLine:
-        // 绘制蜡烛涨跌线图
-        paintUpDownLineTypeCandleChart(
-          canvas,
-          startOffset: startCandleDx - candleWidthHalf,
-        );
-        paintLatestCandlePoint(canvas, size);
+    final chartType = getChartType();
+
+    switch (chartType) {
+      case BarChartType(:final style):
+        // 绘制蜡烛柱状图，传入样式
+        paintBarTypeCandleChart(canvas, size, style);
+      case LineChartType(:final style):
+        switch (style) {
+          case LineChartStyle.normal:
+            // 绘制普通折线图
+            paintLineTypeCandleChart(
+              canvas,
+              startOffset: startCandleDx - candleWidthHalf,
+              linePaint: getLinePaint(
+                color: indicator.lineColor,
+                strokeWidth: candleLineWidth,
+              ),
+            );
+            paintLatestCandlePoint(canvas, size);
+          case LineChartStyle.upDown:
+            // 绘制涨跌线图
+            paintUpDownLineTypeCandleChart(
+              canvas,
+              startOffset: startCandleDx - candleWidthHalf,
+            );
+            paintLatestCandlePoint(canvas, size);
+        }
     }
 
     /// 绘制价钱刻度数据
@@ -198,7 +202,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
   }
 
   /// 绘制蜡烛柱状图
-  void paintBarTypeCandleChart(Canvas canvas, Size size) {
+  void paintBarTypeCandleChart(Canvas canvas, Size size, ChartBarStyle style) {
     if (!klineData.canPaintChart) {
       logw('paintBarTypeCandleChart Data.list is empty or Index is out of bounds');
       return;
@@ -227,7 +231,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
         high: highY,
         low: lowY,
         barWidthHalf: barWidthHalf,
-        chartStyle: indicator.chartBarStyle,
+        chartStyle: style,
       );
 
       if (indicator.high.show) {

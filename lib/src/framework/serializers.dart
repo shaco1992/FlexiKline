@@ -97,19 +97,45 @@ class PaintModeConverter implements JsonConverter<PaintMode, String> {
   String toJson(PaintMode mode) => mode.name;
 }
 
-class ChartTypeConverter implements JsonConverter<ChartType, String> {
+class ChartTypeConverter implements JsonConverter<ChartType, Map<String, dynamic>> {
   const ChartTypeConverter();
 
   @override
-  ChartType fromJson(String json) {
-    return ChartType.values.firstWhere(
-      (e) => e.name.equalsIgnoreCase(json),
-      orElse: () => ChartType.bar,
-    );
+  ChartType fromJson(Map<String, dynamic> json) {
+    final type = json['type'] as String;
+    final style = json['style'] as String;
+
+    switch (type) {
+      case 'bar':
+        final barStyle = ChartBarStyle.values.firstWhere(
+          (e) => e.name == style,
+          orElse: () => ChartBarStyle.allSolid,
+        );
+        return BarChartType(barStyle);
+      case 'line':
+        final lineStyle = LineChartStyle.values.firstWhere(
+          (e) => e.name == style,
+          orElse: () => LineChartStyle.normal,
+        );
+        return LineChartType(lineStyle);
+      default:
+        return ChartType.barSolid; // 默认值
+    }
   }
 
   @override
-  String toJson(ChartType style) => style.name;
+  Map<String, dynamic> toJson(ChartType chartType) {
+    return switch (chartType) {
+      BarChartType(:final style) => {
+          'type': 'bar',
+          'style': style.name,
+        },
+      LineChartType(:final style) => {
+          'type': 'line',
+          'style': style.name,
+        },
+    };
+  }
 }
 
 class ChartBarStyleConverter implements JsonConverter<ChartBarStyle, String> {
@@ -125,6 +151,21 @@ class ChartBarStyleConverter implements JsonConverter<ChartBarStyle, String> {
 
   @override
   String toJson(ChartBarStyle style) => style.name;
+}
+
+class LineChartStyleConverter implements JsonConverter<LineChartStyle, String> {
+  const LineChartStyleConverter();
+
+  @override
+  LineChartStyle fromJson(String json) {
+    return LineChartStyle.values.firstWhere(
+      (e) => e.name.equalsIgnoreCase(json),
+      orElse: () => LineChartStyle.normal,
+    );
+  }
+
+  @override
+  String toJson(LineChartStyle style) => style.name;
 }
 
 /// 基础样式转换
@@ -661,6 +702,7 @@ const _basicConverterList = <JsonConverter>[
   BagNumConverter(),
   ChartTypeConverter(),
   ChartBarStyleConverter(),
+  LineChartStyleConverter(),
   ITimeBarConvert(),
 ];
 
