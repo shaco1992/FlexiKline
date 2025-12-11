@@ -44,8 +44,9 @@ class CandleIndicator extends CandleBaseIndicator {
     this.showCountDown = true,
     required this.countDown,
     required this.chartType,
-    this.minCandleWidthChartType,
-    this.timeChartType,
+    this.minWidthLineType,
+    this.timeBarChartTypes = const {TimeBar.m1: ChartType.lineNormal},
+    this.hideIndicatorsWhenLineChart = false,
     this.longColor,
     this.shortColor,
     this.lineColor,
@@ -82,11 +83,21 @@ class CandleIndicator extends CandleBaseIndicator {
   /// Kline图表类型（包含样式）
   final ChartType chartType;
 
-  /// 最小蜡烛宽度时的图表类型（通常在缩小到极限时使用）
-  final ChartType? minCandleWidthChartType;
+  /// 缩放至最小蜡烛宽度时使用的线图类型
+  /// 限制为 LineChartType，因为最小宽度时蜡烛图无法正常显示
+  /// 如果为 null，则使用默认 chartType
+  final LineChartType? minWidthLineType;
 
-  /// 时间图表类型
-  final ChartType? timeChartType;
+  /// 指定时间周期使用的图表类型映射
+  /// Key: 时间周期，Value: 对应的图表类型
+  /// 优先级高于 minWidthLineType
+  /// 匹配规则：基于 milliseconds 匹配，支持 TimeBar 和 FlexiTimeBar 互相等效
+  final Map<ITimeBar, ChartType>? timeBarChartTypes;
+
+  /// 当图表类型为线图时，是否隐藏主区的技术指标（如 MA 等）
+  /// 用于避免主线图与技术指标线重合，影响可读性
+  /// 默认值为 false，即显示所有指标
+  final bool hideIndicatorsWhenLineChart;
 
   // 自定义上涨颜色
   final Color? longColor;
@@ -131,13 +142,24 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
 
   @override
   ChartType getChartType() {
-    if (klineData.isTimeChart) {
-      return indicator.timeChartType ?? indicator.chartType;
-    } else if (candleWidth <= settingConfig.candleMinWidth) {
-      return indicator.minCandleWidthChartType ?? indicator.chartType;
-    } else {
-      return indicator.chartType;
+    // 1. 优先检查时间周期映射（基于 milliseconds 匹配）
+    final timeBar = klineData.timeBar;
+    final chartTypes = indicator.timeBarChartTypes;
+    if (chartTypes != null && chartTypes.isNotEmpty) {
+      for (final entry in chartTypes.entries) {
+        if (entry.key.milliseconds == timeBar.milliseconds) {
+          return entry.value;
+        }
+      }
     }
+
+    // 2. 检查是否达到最小蜡烛宽度
+    if (candleWidth <= settingConfig.candleMinWidth && indicator.minWidthLineType != null) {
+      return indicator.minWidthLineType!;
+    }
+
+    // 3. 返回默认图表类型
+    return indicator.chartType;
   }
 
   @override
@@ -485,7 +507,8 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
 
       /// 倒计时Text
       String? countDownText;
-      if (indicator.showCountDown && !klineData.isTimeChart) {
+      // 时间周期 > 1秒时才显示倒计时
+      if (indicator.showCountDown && klineData.timeBar.milliseconds > TimeBar.s1.milliseconds) {
         final nextUpdateDateTime = model.nextUpdateDateTime(klineData.req.timeBar);
         if (nextUpdateDateTime != null &&
             nextUpdateDateTime.millisecondsSinceEpoch > DateTime.now().millisecondsSinceEpoch) {

@@ -60,9 +60,6 @@ class SettingConfig {
     /// 是否自动加载更多数据
     this.autoLoadMoreData = true,
     this.expandRatiosOfSameMinmax = const [0.1, 0.05],
-
-    /// 在线图模式(timeBar <= 1秒)时, 是否隐藏技术指标线, 只显示主线图.
-    this.hideIndicatorsInTimeChart = false,
   });
 
   /// Long/Short 浅色不透明度 [longTintColor] 和 [shortTintColor]
@@ -120,11 +117,6 @@ class SettingConfig {
   /// second: 最低价减少(1-second)倍.
   /// 如果为0或null, 则不增加最高价或最低价
   final List<double> expandRatiosOfSameMinmax;
-
-  /// 在线图模式(timeBar <= 1秒)时, 是否隐藏技术指标线, 只显示主线图.
-  /// 用于避免主线图与MA等技术指标线重合, 影响可读性.
-  /// 默认值为 false, 即默认显示所有指标.
-  final bool hideIndicatorsInTimeChart;
 
   bool get isFixedCandleSpacing {
     return candleFixedSpacing != null && candleFixedSpacing! > candleMinWidth;

@@ -22,8 +22,6 @@ mixin CandleReqData on BaseData {
   ITimeBar get timeBar => req.timeBar;
   bool get invalid => req.instId.isEmpty;
 
-  bool get isTimeChart => timeBar.milliseconds <= TimeBar.s1.milliseconds;
-
   @override
   CandleReq updateState({RequestState state = RequestState.none}) {
     return _req = req.copyWith(

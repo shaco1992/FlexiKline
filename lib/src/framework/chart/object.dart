@@ -220,13 +220,19 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
     ) as CandleBasePaintObject?;
   }
 
-  /// 是否只绘制主图（隐藏其他技术指标）
-  /// 当图表类型为线图时，隐藏技术指标以避免线条重合
+  /// 是否只绘制主图（隐藏技术指标）
+  /// 当 CandleIndicator 配置允许且当前图表类型为线图时返回 true
   bool get onlyMainChart {
-    if (!settingConfig.hideIndicatorsInTimeChart) return false;
+    final candleObject = _candlePaintObject;
+    if (candleObject == null) return false;
+    if (candleObject.indicator is! CandleIndicator) return false;
 
-    // 根据实际的图表类型判断，而不仅仅是时间周期
-    return _candlePaintObject?.getChartType().isLine ?? false;
+    // 1. 优先检查配置项（简单的布尔检查，更快）
+    final indicator = candleObject.indicator as CandleIndicator;
+    if (!indicator.hideIndicatorsWhenLineChart) return false;
+
+    // 2. 再检查当前图表类型是否为线图（涉及计算，较慢）
+    return candleObject.getChartType().isLine;
   }
 
   @override

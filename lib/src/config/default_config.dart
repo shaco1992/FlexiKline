@@ -315,9 +315,6 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
 
       /// 是否展示Y轴刻度.
       showYAxisTick: setting?.showYAxisTick ?? true,
-
-      /// 在线图模式(timeBar <= 1秒)时, 是否隐藏技术指标线, 只显示主线图.
-      hideIndicatorsInTimeChart: setting?.allowPaintExtraOutsideMainRect ?? false,
     );
   }
 
@@ -730,8 +727,9 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         borderColor: theme.markLineColor,
       ),
       chartType: instance?.chartType ?? ChartType.barSolid,
-      minCandleWidthChartType: instance?.minCandleWidthChartType ?? ChartType.lineNormal,
-      timeChartType: instance?.timeChartType ?? ChartType.lineNormal,
+      minWidthLineType: instance?.minWidthLineType,
+      timeBarChartTypes: instance?.timeBarChartTypes ?? const {TimeBar.m1: ChartType.lineNormal},
+      hideIndicatorsWhenLineChart: instance?.hideIndicatorsWhenLineChart ?? true,
       longColor: instance?.longColor,
       shortColor: instance?.shortColor,
       lineColor: instance?.lineColor,
@@ -747,7 +745,7 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
       padding: instance?.padding ?? EdgeInsets.zero,
       position: instance?.position ?? DrawPosition.middle,
       // 时间刻度.
-      timeTick: obtainConfig( 
+      timeTick: obtainConfig(
         instance?.timeTick,
         TextAreaConfig(
           style: TextStyle(

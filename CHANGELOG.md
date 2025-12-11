@@ -1,7 +1,8 @@
 ## 1.2.0
 * Fix multiple naming typos in public APIs (Breaking Changes).
-* Add latest candle point marker and time chart indicator hiding options
-* Refactor ChartType from enum to sealed class with integrated style encapsulation (Breaking Changes).
+* Add latest candle point marker for line chart.
+* Refactor ChartType to sealed class; replace timeChartType/minCandleWidthChartType with timeBarChartTypes/minWidthLineType for flexible chart type configuration (Breaking Changes).
+* Move hideIndicatorsInTimeChart from SettingConfig to CandleIndicator as hideIndicatorsWhenLineChart (Breaking Changes).
 * Replace LinearGradient with GradientConfig for better serialization and flexibility; rename chart painting methods (Breaking Changes).
 
 

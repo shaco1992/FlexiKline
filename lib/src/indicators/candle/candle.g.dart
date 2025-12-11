@@ -33,9 +33,12 @@ abstract class _$CandleIndicatorCWProxy {
 
   CandleIndicator chartType(ChartType chartType);
 
-  CandleIndicator minCandleWidthChartType(ChartType? minCandleWidthChartType);
+  CandleIndicator minWidthLineType(LineChartType? minWidthLineType);
 
-  CandleIndicator timeChartType(ChartType? timeChartType);
+  CandleIndicator timeBarChartTypes(
+      Map<ITimeBar, ChartType>? timeBarChartTypes);
+
+  CandleIndicator hideIndicatorsWhenLineChart(bool hideIndicatorsWhenLineChart);
 
   CandleIndicator longColor(Color? longColor);
 
@@ -69,8 +72,9 @@ abstract class _$CandleIndicatorCWProxy {
     bool showCountDown,
     TextAreaConfig countDown,
     ChartType chartType,
-    ChartType? minCandleWidthChartType,
-    ChartType? timeChartType,
+    LineChartType? minWidthLineType,
+    Map<ITimeBar, ChartType>? timeBarChartTypes,
+    bool hideIndicatorsWhenLineChart,
     Color? longColor,
     Color? shortColor,
     Color? lineColor,
@@ -131,12 +135,18 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
   CandleIndicator chartType(ChartType chartType) => this(chartType: chartType);
 
   @override
-  CandleIndicator minCandleWidthChartType(ChartType? minCandleWidthChartType) =>
-      this(minCandleWidthChartType: minCandleWidthChartType);
+  CandleIndicator minWidthLineType(LineChartType? minWidthLineType) =>
+      this(minWidthLineType: minWidthLineType);
 
   @override
-  CandleIndicator timeChartType(ChartType? timeChartType) =>
-      this(timeChartType: timeChartType);
+  CandleIndicator timeBarChartTypes(
+          Map<ITimeBar, ChartType>? timeBarChartTypes) =>
+      this(timeBarChartTypes: timeBarChartTypes);
+
+  @override
+  CandleIndicator hideIndicatorsWhenLineChart(
+          bool hideIndicatorsWhenLineChart) =>
+      this(hideIndicatorsWhenLineChart: hideIndicatorsWhenLineChart);
 
   @override
   CandleIndicator longColor(Color? longColor) => this(longColor: longColor);
@@ -181,8 +191,9 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
     Object? showCountDown = const $CopyWithPlaceholder(),
     Object? countDown = const $CopyWithPlaceholder(),
     Object? chartType = const $CopyWithPlaceholder(),
-    Object? minCandleWidthChartType = const $CopyWithPlaceholder(),
-    Object? timeChartType = const $CopyWithPlaceholder(),
+    Object? minWidthLineType = const $CopyWithPlaceholder(),
+    Object? timeBarChartTypes = const $CopyWithPlaceholder(),
+    Object? hideIndicatorsWhenLineChart = const $CopyWithPlaceholder(),
     Object? longColor = const $CopyWithPlaceholder(),
     Object? shortColor = const $CopyWithPlaceholder(),
     Object? lineColor = const $CopyWithPlaceholder(),
@@ -244,15 +255,19 @@ class _$CandleIndicatorCWProxyImpl implements _$CandleIndicatorCWProxy {
           ? _value.chartType
           // ignore: cast_nullable_to_non_nullable
           : chartType as ChartType,
-      minCandleWidthChartType:
-          minCandleWidthChartType == const $CopyWithPlaceholder()
-              ? _value.minCandleWidthChartType
-              // ignore: cast_nullable_to_non_nullable
-              : minCandleWidthChartType as ChartType?,
-      timeChartType: timeChartType == const $CopyWithPlaceholder()
-          ? _value.timeChartType
+      minWidthLineType: minWidthLineType == const $CopyWithPlaceholder()
+          ? _value.minWidthLineType
           // ignore: cast_nullable_to_non_nullable
-          : timeChartType as ChartType?,
+          : minWidthLineType as LineChartType?,
+      timeBarChartTypes: timeBarChartTypes == const $CopyWithPlaceholder()
+          ? _value.timeBarChartTypes
+          // ignore: cast_nullable_to_non_nullable
+          : timeBarChartTypes as Map<ITimeBar, ChartType>?,
+      hideIndicatorsWhenLineChart:
+          hideIndicatorsWhenLineChart == const $CopyWithPlaceholder()
+              ? _value.hideIndicatorsWhenLineChart
+              // ignore: cast_nullable_to_non_nullable
+              : hideIndicatorsWhenLineChart as bool,
       longColor: longColor == const $CopyWithPlaceholder()
           ? _value.longColor
           // ignore: cast_nullable_to_non_nullable
@@ -314,12 +329,16 @@ CandleIndicator _$CandleIndicatorFromJson(Map<String, dynamic> json) =>
           TextAreaConfig.fromJson(json['countDown'] as Map<String, dynamic>),
       chartType: const ChartTypeConverter()
           .fromJson(json['chartType'] as Map<String, dynamic>),
-      minCandleWidthChartType:
-          _$JsonConverterFromJson<Map<String, dynamic>, ChartType>(
-              json['minCandleWidthChartType'],
-              const ChartTypeConverter().fromJson),
-      timeChartType: _$JsonConverterFromJson<Map<String, dynamic>, ChartType>(
-          json['timeChartType'], const ChartTypeConverter().fromJson),
+      minWidthLineType:
+          _$JsonConverterFromJson<Map<String, dynamic>, LineChartType>(
+              json['minWidthLineType'],
+              const LineChartTypeConverter().fromJson),
+      timeBarChartTypes: json['timeBarChartTypes'] == null
+          ? const {TimeBar.m1: ChartType.lineNormal}
+          : const TimeBarChartTypesConverter()
+              .fromJson(json['timeBarChartTypes'] as List?),
+      hideIndicatorsWhenLineChart:
+          json['hideIndicatorsWhenLineChart'] as bool? ?? false,
       longColor: _$JsonConverterFromJson<String, Color>(
           json['longColor'], const ColorConverter().fromJson),
       shortColor: _$JsonConverterFromJson<String, Color>(
@@ -355,12 +374,12 @@ Map<String, dynamic> _$CandleIndicatorToJson(CandleIndicator instance) =>
       'showCountDown': instance.showCountDown,
       'countDown': instance.countDown.toJson(),
       'chartType': const ChartTypeConverter().toJson(instance.chartType),
-      'minCandleWidthChartType':
-          _$JsonConverterToJson<Map<String, dynamic>, ChartType>(
-              instance.minCandleWidthChartType,
-              const ChartTypeConverter().toJson),
-      'timeChartType': _$JsonConverterToJson<Map<String, dynamic>, ChartType>(
-          instance.timeChartType, const ChartTypeConverter().toJson),
+      'minWidthLineType':
+          _$JsonConverterToJson<Map<String, dynamic>, LineChartType>(
+              instance.minWidthLineType, const LineChartTypeConverter().toJson),
+      'timeBarChartTypes':
+          const TimeBarChartTypesConverter().toJson(instance.timeBarChartTypes),
+      'hideIndicatorsWhenLineChart': instance.hideIndicatorsWhenLineChart,
       'longColor': _$JsonConverterToJson<String, Color>(
           instance.longColor, const ColorConverter().toJson),
       'shortColor': _$JsonConverterToJson<String, Color>(

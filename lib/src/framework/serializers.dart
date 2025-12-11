@@ -168,6 +168,68 @@ class LineChartStyleConverter implements JsonConverter<LineChartStyle, String> {
   String toJson(LineChartStyle style) => style.name;
 }
 
+/// LineChartType 类型的序列化转换器
+/// 复用 ChartTypeConverter 的实现
+class LineChartTypeConverter implements JsonConverter<LineChartType, Map<String, dynamic>> {
+  const LineChartTypeConverter();
+
+  @override
+  LineChartType fromJson(Map<String, dynamic> json) {
+    final chartType = const ChartTypeConverter().fromJson(json);
+    return chartType is LineChartType ? chartType : ChartType.lineNormal;
+  }
+
+  @override
+  Map<String, dynamic> toJson(LineChartType chartType) {
+    return const ChartTypeConverter().toJson(chartType);
+  }
+}
+
+/// BarChartType 类型的序列化转换器
+/// 复用 ChartTypeConverter 的实现
+class BarChartTypeConverter implements JsonConverter<BarChartType, Map<String, dynamic>> {
+  const BarChartTypeConverter();
+
+  @override
+  BarChartType fromJson(Map<String, dynamic> json) {
+    final chartType = const ChartTypeConverter().fromJson(json);
+    return chartType is BarChartType ? chartType : ChartType.barSolid;
+  }
+
+  @override
+  Map<String, dynamic> toJson(BarChartType chartType) {
+    return const ChartTypeConverter().toJson(chartType);
+  }
+}
+
+/// 时间周期图表类型映射的序列化转换器
+class TimeBarChartTypesConverter implements JsonConverter<Map<ITimeBar, ChartType>?, List<dynamic>?> {
+  const TimeBarChartTypesConverter();
+
+  @override
+  Map<ITimeBar, ChartType>? fromJson(List<dynamic>? json) {
+    if (json == null) return null;
+    return Map.fromEntries(json.map((e) {
+      final map = e as Map<String, dynamic>;
+      return MapEntry(
+        const ITimeBarConvert().fromJson(map['timeBar'] as Map<String, dynamic>),
+        const ChartTypeConverter().fromJson(map['chartType'] as Map<String, dynamic>),
+      );
+    }));
+  }
+
+  @override
+  List<dynamic>? toJson(Map<ITimeBar, ChartType>? map) {
+    if (map == null) return null;
+    return map.entries
+        .map((e) => {
+              'timeBar': const ITimeBarConvert().toJson(e.key),
+              'chartType': const ChartTypeConverter().toJson(e.value),
+            })
+        .toList();
+  }
+}
+
 /// 基础样式转换
 
 class DrawPositionConverter implements JsonConverter<DrawPosition, String> {
@@ -836,6 +898,8 @@ const _basicConverterList = <JsonConverter>[
   ChartTypeConverter(),
   ChartBarStyleConverter(),
   LineChartStyleConverter(),
+  LineChartTypeConverter(),
+  BarChartTypeConverter(),
   ITimeBarConvert(),
 ];
 
@@ -855,6 +919,7 @@ const FlexiIndicatorSerializable = JsonSerializable(
   converters: [
     IIndicatorKeyConvert(),
     PaintModeConverter(),
+    TimeBarChartTypesConverter(),
     ..._basicConverterList,
   ],
   explicitToJson: true,
