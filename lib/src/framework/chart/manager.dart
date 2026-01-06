@@ -33,9 +33,11 @@ final class IndicatorPaintObjectManager with KlineLog {
     for (final MapEntry(key: key, value: builder) in mainIndicators.entries) {
       _registerMainIndicatorBuilder(key, builder);
     }
-    final subIndicators = configuration.subIndicatorBuilders;
-    for (final MapEntry(key: key, value: builder) in subIndicators.entries) {
-      _registerSubIndicatorBuilder(key, builder);
+    if (subIndicatorMaxCount > 0) {
+      final subIndicators = configuration.subIndicatorBuilders;
+      for (final MapEntry(key: key, value: builder) in subIndicators.entries) {
+        _registerSubIndicatorBuilder(key, builder);
+      }
     }
     _flexiKlineConfig = configuration.getFlexiKlineConfig();
     _subPaintObjectQueue = FixedHashQueue<PaintObjectBox>(subIndicatorMaxCount);
@@ -387,18 +389,27 @@ final class IndicatorPaintObjectManager with KlineLog {
     return null;
   }
 
-  bool updateIndicator<T extends Indicator>(T indicator) {
+  /// 更新[indicator]指标配置
+  /// 1. 如果已载入, 则更新当前绘制对象的指标
+  /// 2. 如果未载入, 则保存到本地缓存中, 以备后续使用
+  /// [forceSave] 是否强制保存到本地缓存中
+  /// 注: 如果[forceSave]为true, 当指标被动加载时, 强制使用最新配置.
+  /// 返回: 是否更新成功
+  bool updateIndicator<T extends Indicator>(T indicator, [bool forceSave = false]) {
     final key = indicator.key;
     if (hasRegisteredInMain(key)) {
       bool updated = mainPaintObject.updateChildIndicator(indicator);
-      if (!updated) {
-        updated = configuration.saveIndicator(indicator);
+      if (!updated || forceSave) {
+        updated = configuration.saveIndicator(indicator) || updated;
       }
       return updated;
     } else if (hasRegisteredInSub(key)) {
       final object = subPaintObjects.firstWhereOrNull((obj) => obj.key == key);
       if (object != null) {
         object.doDidUpdateIndicator(indicator);
+        if (forceSave) {
+          return configuration.saveIndicator(indicator);
+        }
         return true;
       } else {
         return configuration.saveIndicator(indicator);

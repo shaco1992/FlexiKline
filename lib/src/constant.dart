@@ -102,6 +102,16 @@ extension ITimeBarExt on ITimeBar {
   bool get isUtc {
     return bar.equalsIgnoreCase('utc');
   }
+
+  /// 比较两个时间粒度是否相同
+  bool isSameAs(ITimeBar other) {
+    return bar == other.bar && milliseconds == other.milliseconds;
+  }
+}
+
+/// 比较两个时间粒度是否相同
+bool compareTimeBar(ITimeBar a, ITimeBar b) {
+  return a.bar == b.bar && a.milliseconds == b.milliseconds;
 }
 
 /// 自定义时间粒度

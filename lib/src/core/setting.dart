@@ -499,7 +499,7 @@ mixin SettingBinding on KlineBindingBase implements ISetting, IGrid, IChart, ICr
       storeIndicators: storeIndicators,
       layoutMode: layoutMode,
     );
-    if (storeDrawOverlays) {
+    if (storeDrawOverlays && drawConfig.enable) {
       _drawObjectManager.storeDrawOverlaysConfig();
     }
   }
@@ -515,7 +515,7 @@ mixin SettingBinding on KlineBindingBase implements ISetting, IGrid, IChart, ICr
     );
     _invokeSizeChanged(force: updateIndicators);
     _updateSubHeightList();
-    if (updateDrawOverlays) {
+    if (updateDrawOverlays && drawConfig.enable) {
       _drawObjectManager.updateDrawOverlaysConfig(drawConfig);
       markRepaintDraw();
     }
@@ -578,7 +578,7 @@ mixin SettingBinding on KlineBindingBase implements ISetting, IGrid, IChart, ICr
   /// 1. 如果已载入, 则更新当前绘制对象的指标
   /// 2. 如果未载入, 则保存到本地缓存中, 以备后续使用
   bool updateIndicator<T extends Indicator>(T indicator) {
-    final updated = _paintObjectManager.updateIndicator(indicator);
+    final updated = _paintObjectManager.updateIndicator(indicator, true);
     if (updated) markRepaintChart();
     return updated;
   }

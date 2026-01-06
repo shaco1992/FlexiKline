@@ -45,7 +45,7 @@ class CandleIndicator extends CandleBaseIndicator {
     required this.countDown,
     required this.chartType,
     this.minWidthLineType,
-    this.timeBarChartTypes = const {TimeBar.m1: ChartType.lineNormal},
+    this.timeBarChartTypes = const {TimeBar.m1: FlexiChartType.lineNormal},
     this.hideIndicatorsWhenLineChart = false,
     this.longColor,
     this.shortColor,
@@ -80,19 +80,19 @@ class CandleIndicator extends CandleBaseIndicator {
   final bool showCountDown;
   final TextAreaConfig countDown;
 
-  /// Kline图表类型（包含样式）
-  final ChartType chartType;
+  /// 主区蜡烛图表默认类型（包含样式）
+  final FlexiChartType chartType;
 
   /// 缩放至最小蜡烛宽度时使用的线图类型
   /// 限制为 LineChartType，因为最小宽度时蜡烛图无法正常显示
   /// 如果为 null，则使用默认 chartType
-  final LineChartType? minWidthLineType;
+  final FlexiLineChartType? minWidthLineType;
 
   /// 指定时间周期使用的图表类型映射
   /// Key: 时间周期，Value: 对应的图表类型
   /// 优先级高于 minWidthLineType
   /// 匹配规则：基于 milliseconds 匹配，支持 TimeBar 和 FlexiTimeBar 互相等效
-  final Map<ITimeBar, ChartType>? timeBarChartTypes;
+  final Map<ITimeBar, FlexiChartType>? timeBarChartTypes;
 
   /// 当图表类型为线图时，是否隐藏主区的技术指标（如 MA 等）
   /// 用于避免主线图与技术指标线重合，影响可读性
@@ -141,7 +141,10 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
   BagNum? _maxHigh, _minLow;
 
   @override
-  ChartType getChartType() {
+  bool get hideIndicatorsWhenLineChart => indicator.hideIndicatorsWhenLineChart;
+
+  @override
+  FlexiChartType getChartType() {
     // 1. 优先检查时间周期映射（基于 milliseconds 匹配）
     final timeBar = klineData.timeBar;
     final chartTypes = indicator.timeBarChartTypes;
@@ -177,12 +180,12 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
     final chartType = getChartType();
 
     switch (chartType) {
-      case BarChartType(:final style):
+      case FlexiBarChartType(:final style):
         // 绘制蜡烛柱状图，传入样式
         paintBarTypeCandleChart(canvas, size, style);
-      case LineChartType(:final style):
+      case FlexiLineChartType(:final style):
         switch (style) {
-          case LineChartStyle.normal:
+          case ChartLineStyle.normal:
             // 绘制普通折线图
             paintCandleLineChart(
               canvas,
@@ -197,7 +200,7 @@ class CandlePaintObject<T extends CandleIndicator> extends CandleBasePaintObject
               ),
             );
             paintLatestCandlePoint(canvas, size);
-          case LineChartStyle.upDown:
+          case ChartLineStyle.updown:
             // 绘制涨跌线图
             paintCandleUpDownLineChart(
               canvas,

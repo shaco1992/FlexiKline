@@ -1,3 +1,10 @@
+## 1.2.1
+* Refactor ChartType to FlexiChartType with improved structure and key property (Breaking Changes).
+* Add negative number constants to BagNum (minusHundred, minusFifty, minusTen, minusThree, minusTwo, minusOne).
+* Add time bar comparison methods (isSameAs, compareTimeBar) for ITimeBar.
+* Improve chart framework serialization and object handling.
+* Update flexi_formatter dependency to ^1.7.3.
+
 ## 1.2.0
 * Fix multiple naming typos in public APIs (Breaking Changes).
 * Add latest candle point marker for line chart.

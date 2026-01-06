@@ -15,72 +15,122 @@
 part of 'indicator.dart';
 
 /// K线图绘制类型
-sealed class ChartType {
-  const ChartType();
+sealed class FlexiChartType {
+  const FlexiChartType();
 
-  /// 全实心蜡烛图
-  static const barSolid = BarChartType(ChartBarStyle.allSolid);
+  String get key;
 
-  /// 全空心蜡烛图
-  static const barHollow = BarChartType(ChartBarStyle.allHollow);
+  /// 全实心蜡烛图类型
+  static const barSolid = FlexiBarChartType.allSolid;
 
-  /// 上涨空心蜡烛图
-  static const barUpHollow = BarChartType(ChartBarStyle.upHollow);
+  /// 全空心蜡烛图类型
+  static const barHollow = FlexiBarChartType.allHollow;
 
-  /// 下跌空心蜡烛图
-  static const barDownHollow = BarChartType(ChartBarStyle.downHollow);
+  /// 上涨空心蜡烛图类型
+  static const barUpHollow = FlexiBarChartType.upHollow;
 
-  /// OHLC美国线
-  static const barOhlc = BarChartType(ChartBarStyle.ohlc);
+  /// 下跌空心蜡烛图类型
+  static const barDownHollow = FlexiBarChartType.downHollow;
 
-  /// 普通折线图
-  static const lineNormal = LineChartType(LineChartStyle.normal);
+  /// OHLC美国线类型
+  static const barOhlc = FlexiBarChartType.ohlc;
 
-  /// 涨跌线图
-  static const lineUpDown = LineChartType(LineChartStyle.upDown);
+  /// 普通折线图类型
+  static const lineNormal = FlexiLineChartType.normal;
+
+  /// 涨跌线图类型
+  static const lineUpdown = FlexiLineChartType.updown;
+
+  /// 支持的图表类型列表
+  static const List<FlexiChartType> supportedTypes = [
+    ...FlexiBarChartType.supportedTypes,
+    ...FlexiLineChartType.supportedTypes,
+  ];
 
   /// 创建蜡烛图类型
   ///
   /// [style] 蜡烛图样式，默认为 [ChartBarStyle.allSolid]
-  factory ChartType.bar([ChartBarStyle style = ChartBarStyle.allSolid]) {
-    return BarChartType(style);
+  factory FlexiChartType.bar([ChartBarStyle style = ChartBarStyle.allSolid]) {
+    return FlexiBarChartType(style);
   }
 
   /// 创建线图类型
   ///
-  /// [style] 线图样式，默认为 [LineChartStyle.normal]
-  factory ChartType.line([LineChartStyle style = LineChartStyle.normal]) {
-    return LineChartType(style);
+  /// [style] 线图样式，默认为 [ChartLineStyle.normal]
+  factory FlexiChartType.line([ChartLineStyle style = ChartLineStyle.normal]) {
+    return FlexiLineChartType(style);
   }
 
   /// 是否为线图类型
-  bool get isLine => this is LineChartType;
+  bool get isLine => this is FlexiLineChartType;
 
   /// 是否为蜡烛图类型
-  bool get isBar => this is BarChartType;
+  bool get isBar => this is FlexiBarChartType;
 }
 
 /// 蜡烛图类型，包含蜡烛图样式
-final class BarChartType extends ChartType {
-  const BarChartType(this.style);
+final class FlexiBarChartType extends FlexiChartType {
+  const FlexiBarChartType(this.style);
 
   final ChartBarStyle style;
 
+  /// 全实心蜡烛图类型
+  static const allSolid = FlexiBarChartType(ChartBarStyle.allSolid);
+
+  /// 全空心蜡烛图类型
+  static const allHollow = FlexiBarChartType(ChartBarStyle.allHollow);
+
+  /// 上涨空心蜡烛图类型
+  static const upHollow = FlexiBarChartType(ChartBarStyle.upHollow);
+
+  /// 下跌空心蜡烛图类型
+  static const downHollow = FlexiBarChartType(ChartBarStyle.downHollow);
+
+  /// OHLC美国线类型
+  static const ohlc = FlexiBarChartType(ChartBarStyle.ohlc);
+
+  /// 蜡烛图类型列表
+  static const List<FlexiBarChartType> supportedTypes = [
+    allSolid,
+    allHollow,
+    upHollow,
+    downHollow,
+    ohlc,
+  ];
+
   @override
-  bool operator ==(Object other) => identical(this, other) || other is BarChartType && style == other.style;
+  String get key => 'bar_${style.name}';
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is FlexiBarChartType && style == other.style;
 
   @override
   int get hashCode => style.hashCode;
 }
 
 /// 线图类型，包含线图样式
-final class LineChartType extends ChartType {
-  const LineChartType(this.style);
+final class FlexiLineChartType extends FlexiChartType {
+  const FlexiLineChartType(this.style);
 
-  final LineChartStyle style;
+  final ChartLineStyle style;
+
+  /// 普通折线图类型
+  static const normal = FlexiLineChartType(ChartLineStyle.normal);
+
+  /// 涨跌线图类型
+  static const updown = FlexiLineChartType(ChartLineStyle.updown);
+
+  /// 线图类型列表
+  static const List<FlexiLineChartType> supportedTypes = [
+    normal,
+    updown,
+  ];
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LineChartType && style == other.style;
+  String get key => 'line_${style.name}';
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is FlexiLineChartType && style == other.style;
 
   @override
   int get hashCode => style.hashCode;
@@ -100,9 +150,9 @@ enum ChartBarStyle {
 }
 
 /// K线线图的绘制样式
-enum LineChartStyle {
+enum ChartLineStyle {
   normal, // 普通折线
-  upDown; // 涨跌线
+  updown; // 涨跌线
 }
 
 /// Indicator绘制模式

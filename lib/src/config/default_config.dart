@@ -20,6 +20,7 @@ import '../extension/basic_type_ext.dart';
 import '../framework/export.dart';
 import '../indicators/export.dart';
 import 'cross_config/cross_config.dart';
+import 'gradient_config/gradient_config.dart';
 import 'magnifier_config/magnifier_config.dart';
 import 'point_config/point_config.dart';
 import 'draw_config/draw_config.dart';
@@ -726,16 +727,16 @@ mixin FlexiKlineThemeConfigurationMixin implements IConfiguration {
         background: theme.countDownTextBg,
         borderColor: theme.markLineColor,
       ),
-      chartType: instance?.chartType ?? ChartType.barSolid,
+      chartType: instance?.chartType ?? FlexiChartType.barSolid,
       minWidthLineType: instance?.minWidthLineType,
-      timeBarChartTypes: instance?.timeBarChartTypes ?? const {TimeBar.m1: ChartType.lineNormal},
+      timeBarChartTypes: instance?.timeBarChartTypes ?? const {TimeBar.m1: FlexiChartType.lineNormal},
       hideIndicatorsWhenLineChart: instance?.hideIndicatorsWhenLineChart ?? true,
       longColor: instance?.longColor,
       shortColor: instance?.shortColor,
       lineColor: instance?.lineColor,
-      lineGradientConfig: instance?.lineGradientConfig,
-      longGradientConfig: instance?.longGradientConfig,
-      shortGradientConfig: instance?.shortGradientConfig,
+      lineGradientConfig: instance?.lineGradientConfig ?? GradientPresets.lineChart,
+      longGradientConfig: instance?.longGradientConfig ?? GradientPresets.long,
+      shortGradientConfig: instance?.shortGradientConfig ?? GradientPresets.short,
     );
   }
 

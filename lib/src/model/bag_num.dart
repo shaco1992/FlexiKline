@@ -38,6 +38,12 @@ final class BagNumException implements Exception {
 /// 自定义数值类型Wrapper.
 /// 主要用于指标数据计算, 适配精确模式(Decimal)和快速模式(fast mode)
 extension type BagNum._(Object _value) {
+  static final BagNum minusHundred = BagNum._(-100);
+  static final BagNum minusFifty = BagNum._(-50);
+  static final BagNum minusTen = BagNum._(-10);
+  static final BagNum minusThree = BagNum._(-3);
+  static final BagNum minusTwo = BagNum._(-2);
+  static final BagNum minusOne = BagNum._(-1);
   static final BagNum zero = BagNum._(0);
   static final BagNum one = BagNum._(1);
   static final BagNum two = BagNum._(2);

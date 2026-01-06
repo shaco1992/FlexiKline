@@ -20,7 +20,6 @@ abstract class IndicatorObject<T extends Indicator>
     implements Comparable<IndicatorObject<T>>, IPaintBoundingBox, IPaintDataInit, IPaintObject {
   IndicatorObject(this._indicator, this._context);
 
-  // ignore: prefer_final_fields
   T _indicator;
   late final IPaintContext _context;
 
@@ -166,7 +165,10 @@ abstract class CandleBasePaintObject<T extends CandleBaseIndicator> extends Pain
   });
 
   /// 获取当前蜡烛图的绘制类型.
-  ChartType getChartType();
+  FlexiChartType getChartType();
+
+  /// 是否在蜡烛图类型为线图时隐藏指标
+  bool get hideIndicatorsWhenLineChart => false;
 
   @nonVirtual
   void moveToInitialPosition() {
@@ -220,19 +222,14 @@ final class MainPaintObject<T extends MainPaintObjectIndicator> extends PaintObj
     ) as CandleBasePaintObject?;
   }
 
-  /// 是否只绘制主图（隐藏技术指标）
-  /// 当 CandleIndicator 配置允许且当前图表类型为线图时返回 true
+  /// 是否只绘制蜡烛图（隐藏技术指标）
+  /// 当蜡烛图配置允许且当前图表类型为线图时返回 true
   bool get onlyMainChart {
     final candleObject = _candlePaintObject;
     if (candleObject == null) return false;
-    if (candleObject.indicator is! CandleIndicator) return false;
 
-    // 1. 优先检查配置项（简单的布尔检查，更快）
-    final indicator = candleObject.indicator as CandleIndicator;
-    if (!indicator.hideIndicatorsWhenLineChart) return false;
-
-    // 2. 再检查当前图表类型是否为线图（涉及计算，较慢）
-    return candleObject.getChartType().isLine;
+    // 1. 优先检查配置项hideIndicatorsWhenLineChart是否为true, 如果为true, 则检查当前图表类型是否为线图
+    return candleObject.hideIndicatorsWhenLineChart && candleObject.getChartType().isLine;
   }
 
   @override

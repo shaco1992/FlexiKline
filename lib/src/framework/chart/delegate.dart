@@ -353,11 +353,10 @@ extension MainPaintManagerExt<T extends MainPaintObjectIndicator> on MainPaintOb
     return false;
   }
 
-  Future<bool> doStoreConfig() async {
-    await _context.setConfig(key.id, indicator.toJson());
+  void doStoreConfig() {
+    _context.setConfig(key.id, indicator.toJson());
     for (final object in children) {
       object.doStoreConfig();
     }
-    return true;
   }
 }

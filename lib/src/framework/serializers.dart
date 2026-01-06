@@ -97,11 +97,11 @@ class PaintModeConverter implements JsonConverter<PaintMode, String> {
   String toJson(PaintMode mode) => mode.name;
 }
 
-class ChartTypeConverter implements JsonConverter<ChartType, Map<String, dynamic>> {
-  const ChartTypeConverter();
+class FlexiChartTypeConverter implements JsonConverter<FlexiChartType, Map<String, dynamic>> {
+  const FlexiChartTypeConverter();
 
   @override
-  ChartType fromJson(Map<String, dynamic> json) {
+  FlexiChartType fromJson(Map<String, dynamic> json) {
     final type = json['type'] as String;
     final style = json['style'] as String;
 
@@ -111,26 +111,26 @@ class ChartTypeConverter implements JsonConverter<ChartType, Map<String, dynamic
           (e) => e.name == style,
           orElse: () => ChartBarStyle.allSolid,
         );
-        return BarChartType(barStyle);
+        return FlexiBarChartType(barStyle);
       case 'line':
-        final lineStyle = LineChartStyle.values.firstWhere(
+        final lineStyle = ChartLineStyle.values.firstWhere(
           (e) => e.name == style,
-          orElse: () => LineChartStyle.normal,
+          orElse: () => ChartLineStyle.normal,
         );
-        return LineChartType(lineStyle);
+        return FlexiLineChartType(lineStyle);
       default:
-        return ChartType.barSolid; // 默认值
+        return FlexiChartType.barSolid; // 默认值
     }
   }
 
   @override
-  Map<String, dynamic> toJson(ChartType chartType) {
+  Map<String, dynamic> toJson(FlexiChartType chartType) {
     return switch (chartType) {
-      BarChartType(:final style) => {
+      FlexiBarChartType(:final style) => {
           'type': 'bar',
           'style': style.name,
         },
-      LineChartType(:final style) => {
+      FlexiLineChartType(:final style) => {
           'type': 'line',
           'style': style.name,
         },
@@ -138,8 +138,8 @@ class ChartTypeConverter implements JsonConverter<ChartType, Map<String, dynamic
   }
 }
 
-class ChartBarStyleConverter implements JsonConverter<ChartBarStyle, String> {
-  const ChartBarStyleConverter();
+class FlexiChartBarStyleConverter implements JsonConverter<ChartBarStyle, String> {
+  const FlexiChartBarStyleConverter();
 
   @override
   ChartBarStyle fromJson(String json) {
@@ -153,78 +153,78 @@ class ChartBarStyleConverter implements JsonConverter<ChartBarStyle, String> {
   String toJson(ChartBarStyle style) => style.name;
 }
 
-class LineChartStyleConverter implements JsonConverter<LineChartStyle, String> {
-  const LineChartStyleConverter();
+class FlexiChartLineStyleConverter implements JsonConverter<ChartLineStyle, String> {
+  const FlexiChartLineStyleConverter();
 
   @override
-  LineChartStyle fromJson(String json) {
-    return LineChartStyle.values.firstWhere(
+  ChartLineStyle fromJson(String json) {
+    return ChartLineStyle.values.firstWhere(
       (e) => e.name.equalsIgnoreCase(json),
-      orElse: () => LineChartStyle.normal,
+      orElse: () => ChartLineStyle.normal,
     );
   }
 
   @override
-  String toJson(LineChartStyle style) => style.name;
+  String toJson(ChartLineStyle style) => style.name;
 }
 
 /// LineChartType 类型的序列化转换器
 /// 复用 ChartTypeConverter 的实现
-class LineChartTypeConverter implements JsonConverter<LineChartType, Map<String, dynamic>> {
+class LineChartTypeConverter implements JsonConverter<FlexiLineChartType, Map<String, dynamic>> {
   const LineChartTypeConverter();
 
   @override
-  LineChartType fromJson(Map<String, dynamic> json) {
-    final chartType = const ChartTypeConverter().fromJson(json);
-    return chartType is LineChartType ? chartType : ChartType.lineNormal;
+  FlexiLineChartType fromJson(Map<String, dynamic> json) {
+    final chartType = const FlexiChartTypeConverter().fromJson(json);
+    return chartType is FlexiLineChartType ? chartType : FlexiChartType.lineNormal;
   }
 
   @override
-  Map<String, dynamic> toJson(LineChartType chartType) {
-    return const ChartTypeConverter().toJson(chartType);
+  Map<String, dynamic> toJson(FlexiLineChartType chartType) {
+    return const FlexiChartTypeConverter().toJson(chartType);
   }
 }
 
 /// BarChartType 类型的序列化转换器
 /// 复用 ChartTypeConverter 的实现
-class BarChartTypeConverter implements JsonConverter<BarChartType, Map<String, dynamic>> {
+class BarChartTypeConverter implements JsonConverter<FlexiBarChartType, Map<String, dynamic>> {
   const BarChartTypeConverter();
 
   @override
-  BarChartType fromJson(Map<String, dynamic> json) {
-    final chartType = const ChartTypeConverter().fromJson(json);
-    return chartType is BarChartType ? chartType : ChartType.barSolid;
+  FlexiBarChartType fromJson(Map<String, dynamic> json) {
+    final chartType = const FlexiChartTypeConverter().fromJson(json);
+    return chartType is FlexiBarChartType ? chartType : FlexiChartType.barSolid;
   }
 
   @override
-  Map<String, dynamic> toJson(BarChartType chartType) {
-    return const ChartTypeConverter().toJson(chartType);
+  Map<String, dynamic> toJson(FlexiBarChartType chartType) {
+    return const FlexiChartTypeConverter().toJson(chartType);
   }
 }
 
 /// 时间周期图表类型映射的序列化转换器
-class TimeBarChartTypesConverter implements JsonConverter<Map<ITimeBar, ChartType>?, List<dynamic>?> {
+class TimeBarChartTypesConverter implements JsonConverter<Map<ITimeBar, FlexiChartType>?, List<dynamic>?> {
   const TimeBarChartTypesConverter();
 
   @override
-  Map<ITimeBar, ChartType>? fromJson(List<dynamic>? json) {
+  Map<ITimeBar, FlexiChartType>? fromJson(List<dynamic>? json) {
     if (json == null) return null;
     return Map.fromEntries(json.map((e) {
       final map = e as Map<String, dynamic>;
       return MapEntry(
         const ITimeBarConvert().fromJson(map['timeBar'] as Map<String, dynamic>),
-        const ChartTypeConverter().fromJson(map['chartType'] as Map<String, dynamic>),
+        const FlexiChartTypeConverter().fromJson(map['chartType'] as Map<String, dynamic>),
       );
     }));
   }
 
   @override
-  List<dynamic>? toJson(Map<ITimeBar, ChartType>? map) {
+  List<dynamic>? toJson(Map<ITimeBar, FlexiChartType>? map) {
     if (map == null) return null;
     return map.entries
         .map((e) => {
               'timeBar': const ITimeBarConvert().toJson(e.key),
-              'chartType': const ChartTypeConverter().toJson(e.value),
+              'chartType': const FlexiChartTypeConverter().toJson(e.value),
             })
         .toList();
   }
@@ -895,9 +895,9 @@ const _basicConverterList = <JsonConverter>[
   ColorConverter(),
   DecimalConverter(),
   BagNumConverter(),
-  ChartTypeConverter(),
-  ChartBarStyleConverter(),
-  LineChartStyleConverter(),
+  FlexiChartTypeConverter(),
+  FlexiChartBarStyleConverter(),
+  FlexiChartLineStyleConverter(),
   LineChartTypeConverter(),
   BarChartTypeConverter(),
   ITimeBarConvert(),
